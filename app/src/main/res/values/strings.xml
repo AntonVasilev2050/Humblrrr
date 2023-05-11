@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Humblrrr</string>
+
+    <string name="auth_canceled">Authentication failed</string>
+    <string name="corrupt_access_token">Corrupt access token</string>
+    <string name="subreddits">Subreddits</string>
+    <string name="favorite">Favorite</string>
+    <string name="user">User</string>
+    <string name="info">info</string>
+</resources>
