@@ -7,4 +7,15 @@
     <string name="favorite">Favorite</string>
     <string name="user">User</string>
     <string name="info">info</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_picture">Welcome picture</string>
+    <string name="welcome_to_humblrrr">Welcome to Humblrrr</string>
+    <string name="here_are_communities_of_all_kinds_of_interests">Here are communities of all kinds of interests</string>
+    <string name="subhumblrrr_picture">Subhumblrrr picture</string>
+    <string name="subhumblrrr">SubHumblrrr</string>
+    <string name="you_can_find_new_subs_by_interests_and_see_the_subs_you_are_subscribed_to">You can find new subs by interests and see the subs you are subscribed to</string>
+    <string name="favorites_tab_stores_bookmarks">Favorites tab stores bookmarks with comments and subs. In your profile you will find information about yourself.</string>
+    <string name="share_and_save">Share and save</string>
+    <string name="share_and_save_picture">Share and save picture</string>
 </resources>
