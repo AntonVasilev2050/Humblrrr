@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.avv2050soft.humblrrr.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SubredditsFragment : Fragment() {
 
     companion object {

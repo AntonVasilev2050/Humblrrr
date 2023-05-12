@@ -18,4 +18,6 @@
     <string name="favorites_tab_stores_bookmarks">Favorites tab stores bookmarks with comments and subs. In your profile you will find information about yourself.</string>
     <string name="share_and_save">Share and save</string>
     <string name="share_and_save_picture">Share and save picture</string>
+    <string name="skip">Skip</string>
+    <string name="finish">Finish</string>
 </resources>

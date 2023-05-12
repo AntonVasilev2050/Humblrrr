@@ -19,9 +19,11 @@ import com.avv2050soft.humblrrr.databinding.FragmentLoginBinding
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
 import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
 import com.avv2050soft.humblrrr.presentation.utils.toast
+import dagger.hilt.android.AndroidEntryPoint
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 
+@AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val viewModel: LoginViewModel by viewModels()
