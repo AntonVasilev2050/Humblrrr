@@ -17,3 +17,21 @@ fun showAppbarAndBottomView(requireActivity: Activity) {
     val bottomNavigationView = requireActivity.findViewById<BottomNavigationView>(R.id.bottomView)
     bottomNavigationView.isGone = false
 }
+
+fun hideAppbar(requireActivity: Activity) {
+    requireActivity.findViewById<Toolbar>(R.id.toolbar).isGone = true
+}
+
+fun showAppbar(requireActivity: Activity) {
+    requireActivity.findViewById<Toolbar>(R.id.toolbar).isGone = false
+}
+
+fun hideABottomView(requireActivity: Activity) {
+    val bottomNavigationView = requireActivity.findViewById<BottomNavigationView>(R.id.bottomView)
+    bottomNavigationView.isGone = true
+}
+
+fun showBottomView(requireActivity: Activity) {
+    val bottomNavigationView = requireActivity.findViewById<BottomNavigationView>(R.id.bottomView)
+    bottomNavigationView.isGone = false
+}
