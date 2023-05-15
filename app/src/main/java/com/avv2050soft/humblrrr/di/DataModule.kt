@@ -1,7 +1,9 @@
 package com.avv2050soft.humblrrr.di
 
 import android.content.Context
+import com.avv2050soft.humblrrr.data.repository.RedditRepositoryImpl
 import com.avv2050soft.humblrrr.data.repository.SharedPreferencesRepositoryImpl
+import com.avv2050soft.humblrrr.domain.repository.RedditRepository
 import com.avv2050soft.humblrrr.domain.repository.SharedPreferencesRepository
 import dagger.Module
 import dagger.Provides
@@ -18,5 +20,11 @@ class DataModule {
     @Singleton
     fun provideSharedPreferencesRepository(@ApplicationContext context: Context): SharedPreferencesRepository {
         return SharedPreferencesRepositoryImpl(context = context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRedditRepository(): RedditRepository{
+        return RedditRepositoryImpl()
     }
 }
