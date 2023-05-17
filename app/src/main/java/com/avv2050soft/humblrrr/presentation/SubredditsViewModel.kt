@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.avv2050soft.humblrrr.data.SubredditsPagingSource
+import com.avv2050soft.humblrrr.data.CommonPagingSource
 import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.domain.repository.RedditRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +17,19 @@ import javax.inject.Inject
 class SubredditsViewModel @Inject constructor(
     private val repository: RedditRepository
 ) : ViewModel() {
-    val pageChildren: Flow<PagingData<Children>> = Pager(
+    private val pagingSourceNew = CommonPagingSource(repository) { after ->
+        repository.getNewSubreddits(after)
+    }
+    val pageSubredditNewChildren: Flow<PagingData<Children>> = Pager(
         config = PagingConfig(pageSize = 25),
-        pagingSourceFactory = { SubredditsPagingSource(repository) }
+        pagingSourceFactory = { pagingSourceNew }
+    ).flow.cachedIn(viewModelScope)
+
+    private val pagingSourcePopular = CommonPagingSource(repository) { after ->
+        repository.getPopularSubreddits(after)
+    }
+    val pageSubredditPopularChildren: Flow<PagingData<Children>> = Pager(
+        config = PagingConfig(pageSize = 25),
+        pagingSourceFactory = { pagingSourcePopular }
     ).flow.cachedIn(viewModelScope)
 }

@@ -3,7 +3,6 @@ package com.avv2050soft.humblrrr.presentation
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
@@ -29,8 +28,17 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
     private val viewModel: SubredditsViewModel by viewModels()
     private val subredditAdapter = SubredditAdapter(
         onClick = { children: Children -> onItemClick(children) },
-        onClickImage = { children: Children -> onImageClick(children) }
+        onClickSubscribe = { children: Children -> onImageClick(children) },
+        onClickShare = { url: String -> onShareClick(url) }
     )
+
+    private fun onShareClick(url: String) {
+        Toast.makeText(
+            requireContext(),
+            "Share button $url was clicked",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
     private fun onImageClick(children: Children) {
         Toast.makeText(
@@ -62,14 +70,19 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
             binding.swipeRefresh.isRefreshing = it.refresh == LoadState.Loading
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        loadSubreddits()
-
+        loadSubredditsNew()
         handleToggleButtons()
 
     }
 
-    private fun loadSubreddits() {
-        viewModel.pageChildren.onEach {
+    private fun loadSubredditsNew() {
+        viewModel.pageSubredditNewChildren.onEach {
+            subredditAdapter.submitData(it)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun loadSubredditsPopular() {
+        viewModel.pageSubredditPopularChildren.onEach {
             subredditAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
@@ -79,9 +92,8 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
             toggleButtonNew.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     // выполните действия для кнопки 1
-                    loadSubreddits()
+                    loadSubredditsNew()
                     toggleButtonPopular.isChecked = false
-
                     setupButtons(
                         R.color.white,
                         R.drawable.rectangle_8,
@@ -93,6 +105,7 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
             toggleButtonPopular.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     // выполните действия для кнопки 2
+                    loadSubredditsPopular()
                     toggleButtonNew.isChecked = false
                     setupButtons(
                         R.color.black_transparent,

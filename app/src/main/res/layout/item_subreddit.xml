@@ -4,47 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardViewItemSubreddit"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
 
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/textViewName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="I created the first 100% accurate AI detector" />
+            app:layout_constraintEnd_toStartOf="@+id/imageViewShareButton"
+            app:layout_constraintStart_toEndOf="@+id/imageViewLogo"
+            app:layout_constraintTop_toTopOf="@+id/imageViewLogo"
+            tools:text="Subreddits name" />
 
         <TextView
             android:id="@+id/textViewCreated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewLogo"
+            app:layout_constraintStart_toStartOf="@+id/textViewName"
+            app:layout_constraintTop_toBottomOf="@+id/textViewName"
             tools:text="20:08 16.05.2023" />
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:id="@+id/imageViewSubscribeButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="8dp"
+            android:importantForAccessibility="no"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSubscribersLabel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewTitle"
-            app:srcCompat="@drawable/child_plus" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/subscribe" />
+
+        <ImageView
+            android:id="@+id/imageViewShareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewName"
+            app:srcCompat="@drawable/baseline_share_24_black" />
+
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+            tools:text="Description Description Description Description Description Description " />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/bottom_barrier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="imageViewShareButton, textViewSubscribersLabel" />
+
+        <TextView
+            android:id="@+id/textViewSubscribersLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subscribed:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+
+        <TextView
+            android:id="@+id/textViewSubscribers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewSubscribersLabel"
+            app:layout_constraintStart_toEndOf="@+id/textViewSubscribersLabel"
+            app:layout_constraintTop_toTopOf="@+id/textViewSubscribersLabel"
+            tools:text="21" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

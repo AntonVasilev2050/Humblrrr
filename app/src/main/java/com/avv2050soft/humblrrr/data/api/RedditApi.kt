@@ -1,6 +1,6 @@
 package com.avv2050soft.humblrrr.data.api
 
-import com.avv2050soft.humblrrr.domain.models.response.CommonResponse
+import com.avv2050soft.humblrrr.domain.models.response.Response
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +15,13 @@ interface RedditApi {
     suspend fun getNewSubreddits(
         @Header("Authorization") token: String,
         @Query("after") afterKey: String
-    ) : CommonResponse
+    ) : Response
+
+    @GET("/subreddits/popular")
+    suspend fun getPopularSubreddits(
+        @Header("Authorization") token: String,
+        @Query("after") afterKey: String
+    ) : Response
 
     companion object {
         private const val BASE_URL = "https://oauth.reddit.com"

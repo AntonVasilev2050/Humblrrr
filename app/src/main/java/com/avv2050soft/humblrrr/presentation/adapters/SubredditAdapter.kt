@@ -1,30 +1,42 @@
 package com.avv2050soft.humblrrr.presentation.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.view.get
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.databinding.ItemSubredditBinding
 import com.avv2050soft.humblrrr.domain.models.response.Children
+import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class SubredditAdapter(
     private val onClick: (Children) -> Unit,
-    private val onClickImage: (Children) -> Unit
+    private val onClickSubscribe: (Children) -> Unit,
+    private val onClickShare: (String) -> Unit
 ) : PagingDataAdapter<Children, SubredditViewHolder>(DiffUtilCallback()) {
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
         val item = getItem(position)
         with(holder.binding){
             item?.let {
-                textViewTitle.text= it.data.title
-                val dateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.getDefault())
+                Glide
+                    .with(imageViewLogo)
+                    .load(it.data.iconImg)
+                    .placeholder(R.drawable.reddit_placeholder)
+                    .circleCrop()
+                    .into(imageViewLogo)
+                textViewName.text= it.data.displayNamePrefixed
+                textViewDescription.text = it.data.publicDescription
+                textViewSubscribers.text = it.data.subscribers.toString()
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
                 textViewCreated.text = dateFormat.format((it.data.createdUtc * 1000L))
+                if (it.data.userIsSubscriber){
+                    imageViewSubscribeButton.setImageResource(R.drawable.subscribed)
+                }else{
+                    imageViewSubscribeButton.setImageResource(R.drawable.subscribe)
+                }
             }
             root.setOnClickListener {
                 if (position != RecyclerView.NO_POSITION) {
@@ -33,10 +45,17 @@ class SubredditAdapter(
                     }
                 }
             }
-            imageView.setOnClickListener {
+            imageViewShareButton.setOnClickListener {
                 if (position != RecyclerView.NO_POSITION) {
                     item?.let {
-                        onClickImage.invoke(it)
+                        onClickShare.invoke(it.data.url)
+                    }
+                }
+            }
+            imageViewSubscribeButton.setOnClickListener {
+                if (position != RecyclerView.NO_POSITION) {
+                    item?.let {
+                        onClickSubscribe.invoke(it)
                     }
                 }
             }
