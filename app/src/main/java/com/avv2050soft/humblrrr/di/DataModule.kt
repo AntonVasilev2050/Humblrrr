@@ -23,7 +23,6 @@ class DataModule {
     }
 
     @Provides
-    @Singleton
     fun provideRedditRepository(): RedditRepository{
         return RedditRepositoryImpl()
     }

@@ -7,6 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RedditApi {
@@ -22,6 +24,33 @@ interface RedditApi {
         @Header("Authorization") token: String,
         @Query("after") afterKey: String
     ) : Response
+
+    @GET("/subreddits/search")
+    suspend fun searchSubreddits(
+        @Header("Authorization") token: String,
+        @Query("q") query: String,
+        @Query("after") afterKey: String
+    ): Response
+
+    @GET("/r/{subredditName}")
+    suspend fun loadSubredditPosts(
+        @Header("Authorization") token: String,
+        @Path("subredditName") subredditName: String,
+        @Query("after") afterKey: String
+    ): Response
+
+    @GET("/comments/{postId}")
+    suspend fun getComments(
+        @Header("Authorization") token: String,
+        @Path("postId") pstId: String
+    ): Response
+
+    @POST("/api/subscribe")
+    suspend fun subscribeUnsubscribe(
+        @Header("Authorization") token: String,
+        @Query("action") action: String,
+        @Query("sr_name") displayName: String
+    ): Unit
 
     companion object {
         private const val BASE_URL = "https://oauth.reddit.com"

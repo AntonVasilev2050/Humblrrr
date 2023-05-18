@@ -7,9 +7,9 @@ import com.avv2050soft.humblrrr.domain.models.response.Response
 import com.avv2050soft.humblrrr.domain.repository.RedditRepository
 import javax.inject.Inject
 
-class CommonPagingSource <T : Response> @Inject constructor(
+class CommonPagingSource @Inject constructor(
     private val repository: RedditRepository,
-    private val method: suspend (String) -> T
+    private val method: suspend (String) -> Response
 ) : PagingSource<String, Children>() {
     override fun getRefreshKey(state: PagingState<String, Children>): String = ""
 

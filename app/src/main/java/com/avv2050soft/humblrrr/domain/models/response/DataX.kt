@@ -161,7 +161,7 @@ data class DataX(
     @SerializedName("subreddit_type")
     val subredditType: String,
     @SerializedName("subscribers")
-    val subscribers: Int,
+    var subscribers: Int,
     @SerializedName("suggested_comment_sort")
     val suggestedCommentSort: Any,
     @SerializedName("title")
@@ -199,7 +199,7 @@ data class DataX(
     @SerializedName("user_is_muted")
     val userIsMuted: Boolean,
     @SerializedName("user_is_subscriber")
-    val userIsSubscriber: Boolean,
+    var userIsSubscriber: Boolean,
     @SerializedName("user_sr_flair_enabled")
     val userSrFlairEnabled: Any,
     @SerializedName("user_sr_theme_enabled")

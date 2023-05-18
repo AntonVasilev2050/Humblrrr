@@ -1,16 +1,22 @@
 package com.avv2050soft.humblrrr.presentation
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.databinding.FragmentSubredditsBinding
+import com.avv2050soft.humblrrr.domain.models.ApiResult
+import com.avv2050soft.humblrrr.domain.models.UiText
 import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.SubredditAdapter
@@ -18,6 +24,7 @@ import com.avv2050soft.humblrrr.presentation.utils.showBottomView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 const val CHILD_ID_KEY = "child_id_key"
 
@@ -28,24 +35,43 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
     private val viewModel: SubredditsViewModel by viewModels()
     private val subredditAdapter = SubredditAdapter(
         onClick = { children: Children -> onItemClick(children) },
-        onClickSubscribe = { children: Children -> onImageClick(children) },
+        onClickSubscribe = { name, isSubscribed, position ->
+            onSubscribeClick(
+                name,
+                isSubscribed,
+                position
+            )
+        },
         onClickShare = { url: String -> onShareClick(url) }
     )
 
-    private fun onShareClick(url: String) {
-        Toast.makeText(
-            requireContext(),
-            "Share button $url was clicked",
-            Toast.LENGTH_SHORT
-        ).show()
+    private fun showToast(msg: String?) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 
-    private fun onImageClick(children: Children) {
-        Toast.makeText(
-            requireContext(),
-            "Image in position ${children.data.id} was clicked",
-            Toast.LENGTH_SHORT
-        ).show()
+    private fun onShareClick(url: String) {
+        val fullUrl = buildString {
+            this
+                .append("www.reddit.com")
+                .append(url)
+        }
+        val intent = Intent(Intent.ACTION_SEND).also {
+            it.putExtra(Intent.EXTRA_TEXT, fullUrl)
+            it.type = "text/plain"
+        }
+        try {
+            requireContext().startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            showToast(e.message)
+        }
+    }
+
+    private fun onSubscribeClick(name: String, isSubscribed: Boolean, position: Int) {
+        viewModel.subscribeUnsubscribe(
+            name,
+            isSubscribed,
+            position
+        )
     }
 
     private fun onItemClick(children: Children) {
@@ -72,7 +98,7 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
 
         loadSubredditsNew()
         handleToggleButtons()
-
+        observeSubscribeResult()
     }
 
     private fun loadSubredditsNew() {
@@ -113,6 +139,23 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
                         R.color.white,
                         R.drawable.rectangle_8
                     )
+                }
+            }
+        }
+    }
+
+    private fun observeSubscribeResult() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.subscribeChannel.collect { result ->
+                    if (result is ApiResult.Error) {
+                        showToast(
+                            UiText.ResourceString(R.string.something_went_wrong)
+                                .asString(requireContext())
+                        )
+                    } else {
+                        subredditAdapter.updateElement(result)
+                    }
                 }
             }
         }

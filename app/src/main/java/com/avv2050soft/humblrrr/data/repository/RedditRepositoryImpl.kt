@@ -7,7 +7,7 @@ import com.avv2050soft.humblrrr.domain.repository.RedditRepository
 
 class RedditRepositoryImpl : RedditRepository {
 
-    companion object{
+    companion object {
         var accessToken = "Bearer ${TokenStorage.accessToken}"
     }
 
@@ -17,5 +17,9 @@ class RedditRepositoryImpl : RedditRepository {
 
     override suspend fun getPopularSubreddits(afterKey: String): Response {
         return RedditApi.create().getPopularSubreddits(token = accessToken, afterKey = afterKey)
+    }
+
+    override suspend fun subscribeUnsubscribe(action: String, displayName: String) {
+        RedditApi.create().subscribeUnsubscribe(token = accessToken, action, displayName)
     }
 }
