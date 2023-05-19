@@ -15,6 +15,7 @@ import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.PostsAdapter
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,6 +41,8 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val displayName = arguments?.getString(DISPLAY_NAME_KEY)
+        val bannerImage = arguments?.getString(BANNER_IMAGE_KEY)
+        val icon = arguments?.getString(ICON_KEY)
         CommonPagingSource.subredditName = displayName.toString()
         hideAppbarAndBottomView(requireActivity())
         binding.recyclerViewPosts.adapter =
@@ -54,5 +57,24 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         viewModel.pagePosts.onEach {
             postsAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        setupTopBanner(bannerImage, icon, displayName)
+    }
+
+    private fun setupTopBanner(bannerImage: String?, icon: String?, displayName: String?) {
+        with(binding){
+            Glide
+                .with(imageViewSubredditImage.context)
+                .load(bannerImage)
+                .placeholder(R.drawable.reddit_red_background)
+                .into(imageViewSubredditImage)
+            Glide
+                .with(imageViewAvatar.context)
+                .load(icon)
+                .placeholder(R.drawable.reddit_placeholder)
+                .circleCrop()
+                .into(imageViewAvatar)
+            textViewSubredditName.text = displayName
+        }
     }
 }

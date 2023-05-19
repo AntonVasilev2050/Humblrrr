@@ -8,19 +8,20 @@
 
     <ImageView
         android:id="@+id/imageViewSubredditImage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="100dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewSubredditName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewSubredditImage"
@@ -52,4 +53,25 @@
             tools:listitem="@layout/item_post" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/imageViewAvatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewSubredditImage"
+        app:layout_constraintStart_toStartOf="@+id/imageViewSubredditImage"
+        app:layout_constraintTop_toTopOf="@+id/imageViewSubredditImage"
+        tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/buttonSubscribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Subscribe"
+        app:icon="@drawable/subscribe"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewSubredditImage"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewSubredditImage"
+        app:layout_constraintTop_toTopOf="@+id/imageViewSubredditImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

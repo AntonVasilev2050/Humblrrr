@@ -28,6 +28,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 const val DISPLAY_NAME_KEY = "display_name_key"
+const val BANNER_IMAGE_KEY = "banner_image_key"
+const val ICON_KEY = "icon_key"
 
 @AndroidEntryPoint
 class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
@@ -74,6 +76,8 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
     private fun onItemClick(children: Children) {
         val bundle = Bundle()
         bundle.putString(DISPLAY_NAME_KEY, children.data.displayName)
+        bundle.putString(BANNER_IMAGE_KEY, children.data.bannerImg)
+        bundle.putString(ICON_KEY, children.data.iconImg)
         findNavController().navigate(R.id.action_subredditsFragment_to_postsFragment, bundle)
         Toast.makeText(requireContext(), children.data.id, Toast.LENGTH_SHORT).show()
     }

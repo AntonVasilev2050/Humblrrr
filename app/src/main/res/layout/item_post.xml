@@ -77,9 +77,11 @@
                 android:id="@+id/textViewPostScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                tools:text="12" />
+                android:textSize="16sp"
+                tools:text="16" />
 
             <ImageButton
                 android:id="@+id/imageButtonVoteDown"
@@ -99,7 +101,7 @@
                 android:id="@+id/imageButtonOpenComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:contentDescription="@string/open_comments"
@@ -110,6 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
+                android:textSize="16sp"
                 tools:text="134" />
 
             <ImageButton
