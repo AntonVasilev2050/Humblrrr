@@ -24,17 +24,13 @@ import javax.inject.Inject
 class SubredditsViewModel @Inject constructor(
     private val repository: RedditRepository
 ) : ViewModel() {
-    private val pagingSourceNew = CommonPagingSource(repository) { after ->
-        repository.getNewSubreddits(after)
-    }
+    private val pagingSourceNew = CommonPagingSource(repository, "new")
     val pageSubredditNewChildren: Flow<PagingData<Children>> = Pager(
         config = PagingConfig(pageSize = 25),
         pagingSourceFactory = { pagingSourceNew }
     ).flow.cachedIn(viewModelScope)
 
-    private val pagingSourcePopular = CommonPagingSource(repository) { after ->
-        repository.getPopularSubreddits(after)
-    }
+    private val pagingSourcePopular = CommonPagingSource(repository, "popular")
     val pageSubredditPopularChildren: Flow<PagingData<Children>> = Pager(
         config = PagingConfig(pageSize = 25),
         pagingSourceFactory = { pagingSourcePopular }

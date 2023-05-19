@@ -23,7 +23,11 @@
         android:id="@+id/userFragment"
         android:name="com.avv2050soft.humblrrr.presentation.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_logoutFragment"
+            app:destination="@id/logoutFragment" />
+    </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
         android:name="com.avv2050soft.humblrrr.presentation.onboarding.ViewPagerFragment"
@@ -31,6 +35,15 @@
         tools:layout="@layout/fragment_view_pager" >
         <action
             android:id="@+id/action_viewPagerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="com.avv2050soft.humblrrr.presentation.LogoutFragment"
+        android:label="fragment_logout"
+        tools:layout="@layout/fragment_logout" >
+        <action
+            android:id="@+id/action_logoutFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 

@@ -1,6 +1,7 @@
 package com.avv2050soft.humblrrr.data.api
 
 import com.avv2050soft.humblrrr.domain.models.response.Response
+import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -51,6 +52,17 @@ interface RedditApi {
         @Query("action") action: String,
         @Query("sr_name") displayName: String
     ): Unit
+
+    @GET("user/{username}/about")
+    suspend fun getUserInfo(
+        @Header("Authorization") token: String,
+        @Path("username") userName: String
+    ): Response
+
+    @GET("api/v1/me")
+    suspend fun getUserProfile(
+        @Header("Authorization") token: String,
+    ): UserProfile
 
     companion object {
         private const val BASE_URL = "https://oauth.reddit.com"

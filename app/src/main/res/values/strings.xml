@@ -21,4 +21,10 @@
     <string name="skip">Skip</string>
     <string name="finish">Finish</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="new_button">New</string>
+    <string name="popular_button">Popular</string>
+    <string name="vote_up">Vote Up</string>
+    <string name="vote_down">Vote Down</string>
+    <string name="open_comments">Open comments</string>
+    <string name="share">Share</string>
 </resources>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutItemPost"
+    android:layout_marginTop="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:showDividers="middle"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewSubreddit"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="r/subreddit" />
+
+    <TextView
+        android:id="@+id/textViewAuthor"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        tools:text="r/author" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        tools:text="title" />
+
+    <TextView
+        android:id="@+id/textViewContent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="content" />
+
+    <ImageView
+        android:id="@+id/imageViewContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        tools:srcCompat="?android:attr/galleryItemBackground" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButtonVoteUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:contentDescription="@string/vote_up"
+            android:src="@drawable/vote_key_up_grey" />
+
+        <TextView
+            android:id="@+id/textViewPostScore"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            tools:text="12" />
+
+        <ImageButton
+            android:id="@+id/imageButtonVoteDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:contentDescription="@string/vote_down"
+            android:src="@drawable/vote_key_down_grey" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="40" />
+
+        <ImageButton
+            android:id="@+id/imageButtonOpenComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:contentDescription="@string/open_comments"
+            android:src="@drawable/answer" />
+
+        <TextView
+            android:id="@+id/textViewCommentsCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            tools:text="134" />
+
+        <ImageButton
+            android:id="@+id/imageButtonShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:contentDescription="@string/share"
+            android:src="@drawable/baseline_share_24_black" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

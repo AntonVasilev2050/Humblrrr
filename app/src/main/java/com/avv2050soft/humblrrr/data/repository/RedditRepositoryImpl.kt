@@ -3,6 +3,7 @@ package com.avv2050soft.humblrrr.data.repository
 import com.avv2050soft.humblrrr.data.api.RedditApi
 import com.avv2050soft.humblrrr.data.auth.TokenStorage
 import com.avv2050soft.humblrrr.domain.models.response.Response
+import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
 import com.avv2050soft.humblrrr.domain.repository.RedditRepository
 
 class RedditRepositoryImpl : RedditRepository {
@@ -21,5 +22,9 @@ class RedditRepositoryImpl : RedditRepository {
 
     override suspend fun subscribeUnsubscribe(action: String, displayName: String) {
         RedditApi.create().subscribeUnsubscribe(token = accessToken, action, displayName)
+    }
+
+    override suspend fun getUserProfile(): UserProfile {
+        return RedditApi.create().getUserProfile(token = accessToken)
     }
 }

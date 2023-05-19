@@ -9,6 +9,9 @@
     <color name="black_transparent">#40000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_gray_M200">#FFAB91</color>
+    <color name="orange">#EC615B</color>
 
     <color name="blue_main">#5222D0</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="semi_transparent">#85FFFFFF</color>
 </resources>
