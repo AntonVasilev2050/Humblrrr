@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:paddingStart="8dp"
+            android:textColor="@color/black"
             tools:text="r/author" />
 
         <TextView
@@ -38,6 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
             tools:text="title" />
 
         <TextView
@@ -72,7 +75,7 @@
 
             <TextView
                 android:id="@+id/textViewPostScore"
-                android:layout_width="25dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
