@@ -210,6 +210,17 @@ data class DataX(
     val whitelistStatus: Any,
     @SerializedName("wiki_enabled")
     val wikiEnabled: Any,
+
+    @SerializedName("author")
+    val author: String?,
+    @SerializedName("selftext")
+    val selfText: String?,
+    @SerializedName("ups")
+    val ups: Int,
+    @SerializedName("num_comments")
+    val numComments: Int?,
+
+
     @SerializedName("wls")
     val wls: Any
 )

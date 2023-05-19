@@ -1,115 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayoutItemPost"
-    android:layout_marginTop="16dp"
+    android:id="@+id/cardViewItemPost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:showDividers="middle"
-    android:orientation="vertical">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/textViewSubreddit"
-        android:layout_marginHorizontal="16dp"
+    <LinearLayout
+        android:id="@+id/linearLayoutItemPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="r/subreddit" />
-
-    <TextView
-        android:id="@+id/textViewAuthor"
-        android:layout_marginHorizontal="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        tools:text="r/author" />
-
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_marginHorizontal="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        tools:text="title" />
-
-    <TextView
-        android:id="@+id/textViewContent"
-        android:layout_marginHorizontal="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="content" />
-
-    <ImageView
-        android:id="@+id/imageViewContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        tools:srcCompat="?android:attr/galleryItemBackground" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="16dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/imageButtonVoteUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:contentDescription="@string/vote_up"
-            android:src="@drawable/vote_key_up_grey" />
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:showDividers="middle">
 
         <TextView
-            android:id="@+id/textViewPostScore"
-            android:layout_width="25dp"
+            android:id="@+id/textViewSubreddit"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginHorizontal="16dp"
+            tools:text="r/subreddit" />
+
+        <TextView
+            android:id="@+id/textViewAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:paddingStart="8dp"
+            tools:text="r/author" />
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            tools:text="title" />
+
+        <TextView
+            android:id="@+id/textViewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            tools:text="content" />
+
+        <ImageView
+            android:id="@+id/imageViewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginHorizontal="16dp"
             android:gravity="center"
-            tools:text="12" />
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButtonVoteDown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:contentDescription="@string/vote_down"
-            android:src="@drawable/vote_key_down_grey" />
+            <ImageButton
+                android:id="@+id/imageButtonVoteUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:contentDescription="@string/vote_up"
+                android:src="@drawable/vote_key_up_grey" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="40" />
+            <TextView
+                android:id="@+id/textViewPostScore"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="12" />
 
-        <ImageButton
-            android:id="@+id/imageButtonOpenComments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:contentDescription="@string/open_comments"
-            android:src="@drawable/answer" />
+            <ImageButton
+                android:id="@+id/imageButtonVoteDown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:contentDescription="@string/vote_down"
+                android:src="@drawable/vote_key_down_grey" />
 
-        <TextView
-            android:id="@+id/textViewCommentsCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            tools:text="134" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="40" />
 
-        <ImageButton
-            android:id="@+id/imageButtonShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:contentDescription="@string/share"
-            android:src="@drawable/baseline_share_24_black" />
+            <ImageButton
+                android:id="@+id/imageButtonOpenComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:contentDescription="@string/open_comments"
+                android:src="@drawable/answer" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <TextView
+                android:id="@+id/textViewCommentsCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                tools:text="134" />
 
-</LinearLayout>
+            <ImageButton
+                android:id="@+id/imageButtonShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:contentDescription="@string/share"
+                android:src="@drawable/baseline_share_24_black" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

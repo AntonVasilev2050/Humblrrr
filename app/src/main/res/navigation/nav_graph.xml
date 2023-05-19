@@ -13,19 +13,23 @@
         android:id="@+id/subredditsFragment"
         android:name="com.avv2050soft.humblrrr.presentation.SubredditsFragment"
         android:label="fragment_subreddits"
-        tools:layout="@layout/fragment_subreddits" />
+        tools:layout="@layout/fragment_subreddits" >
+        <action
+            android:id="@+id/action_subredditsFragment_to_postsFragment"
+            app:destination="@id/postsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.avv2050soft.humblrrr.presentation.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment
-        android:id="@+id/userFragment"
-        android:name="com.avv2050soft.humblrrr.presentation.UserFragment"
+        android:id="@+id/userProfileFragment"
+        android:name="com.avv2050soft.humblrrr.presentation.UserProfileFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" >
+        tools:layout="@layout/fragment_user_profile" >
         <action
-            android:id="@+id/action_userFragment_to_logoutFragment"
+            android:id="@+id/action_userProfileFragment_to_logoutFragment"
             app:destination="@id/logoutFragment" />
     </fragment>
     <fragment
@@ -43,9 +47,14 @@
         android:label="fragment_logout"
         tools:layout="@layout/fragment_logout" >
         <action
-            android:id="@+id/action_logoutFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_logoutFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="com.avv2050soft.humblrrr.presentation.PostsFragment"
+        android:label="fragment_posts"
+        tools:layout="@layout/fragment_posts" />
 
 
 </navigation>

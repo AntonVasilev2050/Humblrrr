@@ -17,7 +17,7 @@ class SubredditAdapter(
     private val onClick: (Children) -> Unit,
     private val onClickSubscribe: (displayName: String, userIsSubscribed: Boolean, position: Int) -> Unit,
     private val onClickShare: (String) -> Unit
-) : PagingDataAdapter<Children, SubredditViewHolder>(DiffUtilCallback()) {
+) : PagingDataAdapter<Children, SubredditViewHolder>(DiffUtilCallbackChildren()) {
 
     fun updateElement(data: ApiResult<Int>) {
         data.data?.let { position ->
@@ -90,7 +90,7 @@ class SubredditAdapter(
     }
 }
 
-class DiffUtilCallback : DiffUtil.ItemCallback<Children>() {
+class DiffUtilCallbackChildren : DiffUtil.ItemCallback<Children>() {
     override fun areItemsTheSame(oldItem: Children, newItem: Children): Boolean =
         oldItem.data.id == newItem.data.id
 

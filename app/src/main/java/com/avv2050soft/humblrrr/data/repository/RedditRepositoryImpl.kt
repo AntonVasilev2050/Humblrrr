@@ -24,6 +24,11 @@ class RedditRepositoryImpl : RedditRepository {
         RedditApi.create().subscribeUnsubscribe(token = accessToken, action, displayName)
     }
 
+    override suspend fun loadSubredditPosts(subredditName: String, afterKey: String): Response {
+        return RedditApi.create()
+            .loadSubredditPosts(token = accessToken, subredditName, afterKey = afterKey)
+    }
+
     override suspend fun getUserProfile(): UserProfile {
         return RedditApi.create().getUserProfile(token = accessToken)
     }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserViewModel @Inject constructor(
+class UserProfileViewModel @Inject constructor(
     private val repository: RedditRepository
 ) : ViewModel() {
     private var userProfile: UserProfile? = null

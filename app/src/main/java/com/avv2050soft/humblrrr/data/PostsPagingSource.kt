@@ -6,21 +6,15 @@ import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.domain.repository.RedditRepository
 import javax.inject.Inject
 
-class CommonPagingSource @Inject constructor(
-    private val repository: RedditRepository,
-    private val methodType: String
-) : PagingSource<String, Children>() {
+class PostsPagingSource @Inject constructor(
+    private val repository: RedditRepository
+) : PagingSource<String, Children>(){
     override fun getRefreshKey(state: PagingState<String, Children>): String = ""
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, Children> {
         val after = params.key ?: ""
         return kotlin.runCatching {
-            when (methodType) {
-                "new" -> repository.getNewSubreddits(after)
-                "popular" -> repository.getPopularSubreddits(after)
-                "posts" -> repository.loadSubredditPosts(subredditName = subredditName, after)
-                else -> throw IllegalArgumentException("Invalid method type")
-            }
+            repository.loadSubredditPosts(subredditName = subredditName, after)
         }.fold(
             onSuccess = {
                 LoadResult.Page(

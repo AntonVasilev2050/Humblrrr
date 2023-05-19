@@ -58,7 +58,7 @@ class LogoutFragment : Fragment(R.layout.fragment_logout) {
         }
 
         viewModel.logoutCompletedFlow.launchAndCollectIn(viewLifecycleOwner) {
-            findNavController().navigate(R.id.viewPagerFragment)
+            findNavController().navigate(R.id.action_logoutFragment_to_viewPagerFragment)
         }
     }
 

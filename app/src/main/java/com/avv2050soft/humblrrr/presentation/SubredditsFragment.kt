@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
@@ -26,7 +27,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-const val CHILD_ID_KEY = "child_id_key"
+const val DISPLAY_NAME_KEY = "display_name_key"
 
 @AndroidEntryPoint
 class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
@@ -67,20 +68,13 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
     }
 
     private fun onSubscribeClick(name: String, isSubscribed: Boolean, position: Int) {
-        viewModel.subscribeUnsubscribe(
-            name,
-            isSubscribed,
-            position
-        )
+        viewModel.subscribeUnsubscribe(name, isSubscribed, position)
     }
 
     private fun onItemClick(children: Children) {
-        val childrenBundle = Bundle()
-        childrenBundle.putString(CHILD_ID_KEY, children.data.id)
-//        findNavController().navigate(
-//            R.id.action_,
-//            childrenBundle
-//        )
+        val bundle = Bundle()
+        bundle.putString(DISPLAY_NAME_KEY, children.data.displayName)
+        findNavController().navigate(R.id.action_subredditsFragment_to_postsFragment, bundle)
         Toast.makeText(requireContext(), children.data.id, Toast.LENGTH_SHORT).show()
     }
 
@@ -146,7 +140,7 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
 
     private fun observeSubscribeResult() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED){
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.subscribeChannel.collect { result ->
                     if (result is ApiResult.Error) {
                         showToast(
