@@ -29,4 +29,7 @@
     <string name="share">Share</string>
     <string name="unsubscribe">Unsubscribe</string>
     <string name="subscribe">Subscribe</string>
+    <string name="subreddits_favorite">Subreddits</string>
+    <string name="comments">Comments</string>
+    <string name="posts">Posts</string>
 </resources>

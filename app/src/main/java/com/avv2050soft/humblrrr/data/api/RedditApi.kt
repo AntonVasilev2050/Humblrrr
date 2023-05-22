@@ -59,6 +59,20 @@ interface RedditApi {
         @Path("username") userName: String
     ): Response
 
+    @GET("/subreddits/mine/subscriber")
+    suspend fun loadFavoriteSubreddits(
+        @Header("Authorization") token: String,
+        @Query("after") afterKey: String
+    ): Response
+
+    @GET("/user/{userName}/saved")
+    suspend fun loadFavoritePosts(
+        @Header("Authorization") token: String,
+        @Path("userName") userName: String,
+        @Query("after") after: String,
+        @Query("type") type: String = "links"
+    ): Response
+
     @GET("api/v1/me")
     suspend fun getUserProfile(
         @Header("Authorization") token: String,

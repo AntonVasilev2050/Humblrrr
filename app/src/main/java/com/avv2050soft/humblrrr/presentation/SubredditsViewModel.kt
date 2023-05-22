@@ -34,6 +34,11 @@ class SubredditsViewModel @Inject constructor(
         pagingSourceFactory = { CommonPagingSource(repository, "popular") }
     ).flow.cachedIn(viewModelScope)
 
+    val pageSubredditSearchChildren: Flow<PagingData<Children>> = Pager(
+        config = PagingConfig(pageSize = 25),
+        pagingSourceFactory = { CommonPagingSource(repository, "search") }
+    ).flow.cachedIn(viewModelScope)
+
     private val _subscribeChannel = Channel<ApiResult<Int>>()
     val subscribeChannel = _subscribeChannel.receiveAsFlow()
 

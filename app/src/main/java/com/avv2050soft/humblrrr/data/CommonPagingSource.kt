@@ -19,6 +19,14 @@ class CommonPagingSource @Inject constructor(
                 "new" -> repository.getNewSubreddits(after)
                 "popular" -> repository.getPopularSubreddits(after)
                 "posts" -> repository.loadSubredditPosts(subredditName = subredditName, after)
+                "search" -> repository.searchSubreddits(query = searchQuery, after)
+                "favorite_subreddits" -> repository.loadFavoriteSubreddits(after)
+                "favorite_posts" -> repository.loadFavoritePosts(
+                    after,
+                    userName = userName,
+                    type = "links"
+                )
+
                 else -> throw IllegalArgumentException("Invalid method type")
             }
         }.fold(
@@ -33,7 +41,9 @@ class CommonPagingSource @Inject constructor(
         )
     }
 
-    companion object{
+    companion object {
         var subredditName = ""
+        var searchQuery = "best"
+        var userName = ""
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
+import com.avv2050soft.humblrrr.data.CommonPagingSource
 import com.avv2050soft.humblrrr.databinding.FragmentSubredditsBinding
 import com.avv2050soft.humblrrr.domain.models.ApiResult
 import com.avv2050soft.humblrrr.domain.models.UiText
@@ -100,6 +102,33 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         loadSubredditsNew()
         handleToggleButtons()
         observeSubscribeResult()
+
+        binding.SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    CommonPagingSource.searchQuery = query
+                }
+                makeSearch()
+                subredditAdapter.refresh()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    CommonPagingSource.searchQuery = newText
+                }
+                makeSearch()
+                subredditAdapter.refresh()
+                return true
+            }
+        })
+
+    }
+
+    private fun makeSearch() {
+        viewModel.pageSubredditSearchChildren.onEach {
+            subredditAdapter.submitData(it)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun loadSubredditsNew() {

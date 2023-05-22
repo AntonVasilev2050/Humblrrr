@@ -20,6 +20,11 @@ class RedditRepositoryImpl : RedditRepository {
         return RedditApi.create().getPopularSubreddits(token = accessToken, afterKey = afterKey)
     }
 
+    override suspend fun searchSubreddits(query: String, afterKey: String): Response {
+        return RedditApi.create()
+            .searchSubreddits(token = accessToken, query = query, afterKey = afterKey)
+    }
+
     override suspend fun subscribeUnsubscribe(action: String, displayName: String) {
         RedditApi.create().subscribeUnsubscribe(token = accessToken, action, displayName)
     }
@@ -27,6 +32,19 @@ class RedditRepositoryImpl : RedditRepository {
     override suspend fun loadSubredditPosts(subredditName: String, afterKey: String): Response {
         return RedditApi.create()
             .loadSubredditPosts(token = accessToken, subredditName, afterKey = afterKey)
+    }
+
+    override suspend fun loadFavoriteSubreddits(afterKey: String): Response {
+        return RedditApi.create().loadFavoriteSubreddits(token = accessToken, afterKey = afterKey)
+    }
+
+    override suspend fun loadFavoritePosts(
+        afterKey: String,
+        userName: String,
+        type: String
+    ): Response {
+        return RedditApi.create()
+            .loadFavoritePosts(token = accessToken, userName = userName, after = afterKey)
     }
 
     override suspend fun getUserProfile(): UserProfile {
