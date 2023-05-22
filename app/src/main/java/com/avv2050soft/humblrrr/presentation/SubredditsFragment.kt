@@ -26,10 +26,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 
 const val DISPLAY_NAME_KEY = "display_name_key"
 const val BANNER_IMAGE_KEY = "banner_image_key"
 const val ICON_KEY = "icon_key"
+const val IS_SUBSCRIBER_KEY = "is_user_subscriber"
 
 @AndroidEntryPoint
 class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
@@ -78,6 +80,7 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         bundle.putString(DISPLAY_NAME_KEY, children.data.displayName)
         bundle.putString(BANNER_IMAGE_KEY, children.data.bannerImg)
         bundle.putString(ICON_KEY, children.data.iconImg)
+        bundle.putBoolean(IS_SUBSCRIBER_KEY, children.data.userIsSubscriber)
         findNavController().navigate(R.id.action_subredditsFragment_to_postsFragment, bundle)
         Toast.makeText(requireContext(), children.data.id, Toast.LENGTH_SHORT).show()
     }

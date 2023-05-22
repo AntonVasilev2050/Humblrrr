@@ -70,7 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="Subscribe"
-        app:icon="@drawable/subscribe"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewSubredditImage"
         app:layout_constraintEnd_toEndOf="@+id/imageViewSubredditImage"
         app:layout_constraintTop_toTopOf="@+id/imageViewSubredditImage" />

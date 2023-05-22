@@ -27,4 +27,6 @@
     <string name="vote_down">Vote Down</string>
     <string name="open_comments">Open comments</string>
     <string name="share">Share</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="subscribe">Subscribe</string>
 </resources>
