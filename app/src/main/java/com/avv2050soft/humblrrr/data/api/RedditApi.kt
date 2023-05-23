@@ -46,6 +46,13 @@ interface RedditApi {
         @Path("postId") pstId: String
     ): Response
 
+    @POST("/api/vote")
+    suspend fun vote(
+        @Header("Authorization") token: String,
+        @Query("dir") direction: Int,
+        @Query("id") id: String
+    ): Unit
+
     @POST("/api/subscribe")
     suspend fun subscribeUnsubscribe(
         @Header("Authorization") token: String,

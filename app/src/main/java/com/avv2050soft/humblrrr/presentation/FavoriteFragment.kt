@@ -98,7 +98,6 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         observeSubscribeResult()
     }
 
-
     private fun loadFavoriteSubreddits() {
         viewModel.pageFavoriteSubredditChildren.onEach {
             subredditAdapter.submitData(it)

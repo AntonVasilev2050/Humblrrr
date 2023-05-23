@@ -25,6 +25,10 @@ class RedditRepositoryImpl : RedditRepository {
             .searchSubreddits(token = accessToken, query = query, afterKey = afterKey)
     }
 
+    override suspend fun vote(dir: Int, id: String) {
+        RedditApi.create().vote(token = accessToken, direction = dir, id = id)
+    }
+
     override suspend fun subscribeUnsubscribe(action: String, displayName: String) {
         RedditApi.create().subscribeUnsubscribe(token = accessToken, action, displayName)
     }

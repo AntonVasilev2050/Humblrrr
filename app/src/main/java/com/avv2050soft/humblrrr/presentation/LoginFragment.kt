@@ -63,7 +63,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             Log.d(
                 "Oauth",
-                "access: ${TokenStorage.accessToken} id: ${TokenStorage.idToken} refr: ${TokenStorage.refreshToken}"
+                "access: ${TokenStorage.accessToken}"
             )
         }
     }

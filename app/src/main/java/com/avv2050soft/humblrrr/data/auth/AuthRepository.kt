@@ -35,6 +35,6 @@ class AuthRepository {
         TokenStorage.accessToken = tokens.accessToken
         TokenStorage.refreshToken = tokens.refreshToken
         TokenStorage.idToken = tokens.idToken
-        Log.d("Oauth", "accessT: ${tokens.accessToken} idT: ${tokens.idToken} refrT: ${tokens.refreshToken}")
+        Log.d("Oauth", "accessT: ${tokens.accessToken}")
     }
 }

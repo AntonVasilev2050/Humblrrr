@@ -1,9 +1,10 @@
 package com.avv2050soft.humblrrr.presentation
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -32,13 +33,37 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     private val binding by viewBinding(FragmentPostsBinding::bind)
     private val viewModel: PostsViewModel by viewModels()
     private val postsAdapter = PostsAdapter(
-        onClick = { children: Children ->
-            onItemClick(children)
-        }
+        onClick = { children: Children -> onItemClick(children) },
+        onClickShare = { url: String -> onShareClick(url) },
+        onAuthorClick = { authorName: String -> onAuthorClick(authorName)},
+        onVoteClick = { dir, id, position -> onVoteClick(dir, id, position)}
     )
+    var voteDirection = 0
 
     private fun showToast(msg: String?) {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onVoteClick(dir: Int, id: String, position: Int) {
+        voteDirection = dir
+        viewModel.vote(dir, id, position)
+        showToast("voted $dir")
+    }
+
+    private fun onAuthorClick(authorName: String) {
+        showToast(authorName)
+    }
+
+    private fun onShareClick(url: String) {
+        val intent = Intent(Intent.ACTION_SEND).also {
+            it.putExtra(Intent.EXTRA_TEXT, url)
+            it.type = "text/plain"
+        }
+        try {
+            requireContext().startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            showToast(e.message)
+        }
     }
 
     private fun onItemClick(children: Children) {
@@ -67,6 +92,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         setupTopBanner(bannerImage, icon, displayName, userIsSubscriber)
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.subscribeChannel.collect { result ->
@@ -78,6 +104,22 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                     } else {
                         userIsSubscriber = !userIsSubscriber!!
                         setupTopBanner(bannerImage, icon, displayName, userIsSubscriber)
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.voteChannel.collect{result ->
+                    if (result is ApiResult.Error) {
+                        showToast(
+                            UiText.ResourceString(R.string.something_went_wrong)
+                                .asString(requireContext())
+                        )
+                    } else {
+                        postsAdapter.updatePostScore(result, voteDirection)
+                        postsAdapter.refresh()
                     }
                 }
             }
@@ -105,7 +147,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
             textViewSubredditName.text = displayName
             if (userIsSubscriber == true) {
                 buttonSubscribe.text = getString(R.string.unsubscribe)
-            }else{
+            } else {
                 buttonSubscribe.text = getString(R.string.subscribe)
             }
             buttonSubscribe.setOnClickListener {

@@ -216,7 +216,7 @@ data class DataX(
     @SerializedName("selftext")
     val selfText: String?,
     @SerializedName("ups")
-    val ups: Int,
+    var ups: Int,
     @SerializedName("num_comments")
     val numComments: Int?,
 

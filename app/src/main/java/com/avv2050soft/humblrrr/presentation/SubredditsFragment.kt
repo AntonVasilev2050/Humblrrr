@@ -28,7 +28,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
 
 const val DISPLAY_NAME_KEY = "display_name_key"
 const val BANNER_IMAGE_KEY = "banner_image_key"
@@ -84,7 +83,6 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         bundle.putString(ICON_KEY, children.data.iconImg)
         bundle.putBoolean(IS_SUBSCRIBER_KEY, children.data.userIsSubscriber)
         findNavController().navigate(R.id.action_subredditsFragment_to_postsFragment, bundle)
-        Toast.makeText(requireContext(), children.data.id, Toast.LENGTH_SHORT).show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -103,25 +101,35 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         handleToggleButtons()
         observeSubscribeResult()
 
-        binding.SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     CommonPagingSource.searchQuery = query
                 }
+                binding.toggleButtonNew.visibility = View.GONE
+                binding.toggleButtonPopular.visibility = View.GONE
                 makeSearch()
                 subredditAdapter.refresh()
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    CommonPagingSource.searchQuery = newText
-                }
-                makeSearch()
-                subredditAdapter.refresh()
+//                newText?.let {
+//                    CommonPagingSource.searchQuery = newText
+//                }
+//                makeSearch()
                 return true
             }
         })
+
+        binding.searchView.setOnCloseListener {
+            loadSubredditsNew()
+            binding.toggleButtonNew.isChecked = true
+            binding.toggleButtonNew.visibility = View.VISIBLE
+            binding.toggleButtonPopular.visibility = View.VISIBLE
+            handleToggleButtons()
+            return@setOnCloseListener false
+        }
 
     }
 

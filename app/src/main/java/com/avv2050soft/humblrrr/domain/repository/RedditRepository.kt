@@ -7,6 +7,7 @@ interface RedditRepository {
     suspend fun getNewSubreddits(afterKey: String): Response
     suspend fun getPopularSubreddits(afterKey: String): Response
     suspend fun searchSubreddits(query: String, afterKey: String): Response
+    suspend fun vote(dir: Int, id: String)
     suspend fun subscribeUnsubscribe(action: String, displayName: String)
     suspend fun loadSubredditPosts(subredditName: String, afterKey: String): Response
     suspend fun loadFavoriteSubreddits(afterKey: String): Response

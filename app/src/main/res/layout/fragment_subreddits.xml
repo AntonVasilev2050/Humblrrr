@@ -7,7 +7,7 @@
     tools:context=".presentation.SubredditsFragment">
 
     <SearchView
-        android:id="@+id/SearchView"
+        android:id="@+id/search_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toStartOf="@+id/toggleButtonPopular"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchView" />
+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
     <ToggleButton
         android:id="@+id/toggleButtonPopular"

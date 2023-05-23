@@ -24,16 +24,19 @@ import javax.inject.Inject
 class PostsViewModel @Inject constructor(
     private val repository: RedditRepository
 ) : ViewModel() {
-    val pagePosts : Flow<PagingData<Children>> = Pager(
+    val pagePosts: Flow<PagingData<Children>> = Pager(
         config = PagingConfig(pageSize = 25),
-        pagingSourceFactory = { CommonPagingSource(repository, "posts")}
+        pagingSourceFactory = { CommonPagingSource(repository, "posts") }
     ).flow.cachedIn(viewModelScope)
 
     private val _subscribeChannel = Channel<ApiResult<String>>()
     val subscribeChannel = _subscribeChannel.receiveAsFlow()
 
+    private val _voteChannel = Channel<ApiResult<Int>>()
+    val voteChannel = _voteChannel.receiveAsFlow()
+
     fun subscribeUnsubscribe(displayName: String, isUserSubscriber: Boolean) {
-        viewModelScope.launch(Dispatchers.Default)  {
+        viewModelScope.launch(Dispatchers.Default) {
 //            _subscribeChannel.send(ApiResult.Loading(position))
             kotlin.runCatching {
                 if (isUserSubscriber) {
@@ -48,6 +51,17 @@ class PostsViewModel @Inject constructor(
                         ApiResult.Error(UiText.ResourceString(R.string.something_went_wrong))
                     )
                 }
+            )
+        }
+    }
+
+    fun vote(dir: Int, id: String, position: Int) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                repository.vote(dir, id)
+            }.fold(
+                onSuccess = { _voteChannel.send(ApiResult.Success(position)) },
+                onFailure = { _voteChannel.send(ApiResult.Error(UiText.ResourceString(R.string.something_went_wrong))) }
             )
         }
     }

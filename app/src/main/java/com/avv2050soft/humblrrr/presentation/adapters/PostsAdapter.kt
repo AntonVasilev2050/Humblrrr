@@ -5,15 +5,29 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.databinding.ItemPostBinding
+import com.avv2050soft.humblrrr.domain.models.ApiResult
 import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.bumptech.glide.Glide
 
-class PostsAdapter (
+class PostsAdapter(
     private val onClick: (Children) -> Unit,
-        ) : PagingDataAdapter<Children, PostViewHolder>(DiffUtilCallbackChildren()){
+    private val onClickShare: (String) -> Unit,
+    private val onAuthorClick: (String) -> Unit,
+    private val onVoteClick: (Int, String, Int) -> Unit
+) : PagingDataAdapter<Children, PostViewHolder>(DiffUtilCallbackChildren()) {
+
+    fun updatePostScore(data: ApiResult<Int>, voteDirection: Int) {
+        data.data?.let { position ->
+            snapshot()[position]?.let {
+                it.data.ups = it.data.ups + voteDirection
+                notifyItemChanged(position)
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val item = getItem(position)
-        with(holder.binding){
+        with(holder.binding) {
             item?.let {
                 textViewAuthor.text = it.data.author
                 textViewTitle.text = it.data.title
@@ -24,6 +38,27 @@ class PostsAdapter (
                     .into(imageViewContent)
                 textViewPostScore.text = it.data.ups.toString()
                 textViewCommentsCount.text = it.data.numComments.toString()
+                root.setOnClickListener {
+                    if (position != RecyclerView.NO_POSITION) {
+                        onClick.invoke(item)
+                    }
+                }
+                imageButtonShare.setOnClickListener {
+                    if (position != RecyclerView.NO_POSITION) {
+                        onClickShare.invoke(item.data.url)
+                    }
+                }
+                textViewAuthor.setOnClickListener {
+                    onAuthorClick.invoke(item.data.author.toString())
+                }
+
+                imageButtonVoteUp.setOnClickListener {
+                    onVoteClick.invoke(1, item.data.name, position)
+                }
+
+                imageButtonVoteDown.setOnClickListener {
+                    onVoteClick.invoke(-1, item.data.name, position)
+                }
             }
         }
     }
@@ -35,4 +70,4 @@ class PostsAdapter (
     }
 }
 
-class PostViewHolder(val binding : ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
+class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
