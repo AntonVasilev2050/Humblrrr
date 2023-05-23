@@ -32,4 +32,7 @@
     <string name="subreddits_favorite">Subreddits</string>
     <string name="comments">Comments</string>
     <string name="posts">Posts</string>
+    <string name="karma">Karma:</string>
+    <string name="created">Created:</string>
+    <string name="be_friends">Be friends</string>
 </resources>

@@ -119,7 +119,6 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                         )
                     } else {
                         postsAdapter.updatePostScore(result, voteDirection)
-                        postsAdapter.refresh()
                     }
                 }
             }

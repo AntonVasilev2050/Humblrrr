@@ -1,6 +1,7 @@
 package com.avv2050soft.humblrrr.data.api
 
 import com.avv2050soft.humblrrr.domain.models.response.Response
+import com.avv2050soft.humblrrr.domain.models.userinfo.UserInfo
 import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -43,7 +44,7 @@ interface RedditApi {
     @GET("/comments/{postId}")
     suspend fun getComments(
         @Header("Authorization") token: String,
-        @Path("postId") pstId: String
+        @Path("postId") postId: String
     ): Response
 
     @POST("/api/vote")
@@ -64,7 +65,7 @@ interface RedditApi {
     suspend fun getUserInfo(
         @Header("Authorization") token: String,
         @Path("username") userName: String
-    ): Response
+    ): UserInfo
 
     @GET("/subreddits/mine/subscriber")
     suspend fun loadFavoriteSubreddits(
