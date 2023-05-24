@@ -35,7 +35,7 @@ data class Data(
     @SerializedName("is_employee")
     val isEmployee: Boolean,
     @SerializedName("is_friend")
-    val isFriend: Boolean,
+    var isFriend: Boolean,
     @SerializedName("is_gold")
     val isGold: Boolean,
     @SerializedName("is_mod")

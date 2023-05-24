@@ -58,7 +58,16 @@
         android:id="@+id/postsFragment"
         android:name="com.avv2050soft.humblrrr.presentation.PostsFragment"
         android:label="fragment_posts"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_posts" >
+        <action
+            android:id="@+id/action_postsFragment_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userInfoFragment"
+        android:name="com.avv2050soft.humblrrr.presentation.UserInfoFragment"
+        android:label="fragment_user_info"
+        tools:layout="@layout/fragment_user_info" />
 
 
 </navigation>

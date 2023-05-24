@@ -35,4 +35,6 @@
     <string name="karma">Karma:</string>
     <string name="created">Created:</string>
     <string name="be_friends">Be friends</string>
+    <string name="don_t_be_friends">Don\'t be friends</string>
+    <string name="reddit_s_image">Reddit\'s image</string>
 </resources>

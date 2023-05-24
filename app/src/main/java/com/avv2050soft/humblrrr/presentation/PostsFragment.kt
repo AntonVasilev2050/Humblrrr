@@ -2,14 +2,17 @@ package com.avv2050soft.humblrrr.presentation
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
@@ -26,6 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+
+const val USER_NAME = "user_name"
 
 @AndroidEntryPoint
 class PostsFragment : Fragment(R.layout.fragment_posts) {
@@ -51,7 +56,9 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     }
 
     private fun onAuthorClick(authorName: String) {
-        showToast(authorName)
+        val bundle = Bundle()
+        bundle.putString(USER_NAME, authorName)
+        findNavController().navigate(R.id.action_postsFragment_to_userInfoFragment, bundle)
     }
 
     private fun onShareClick(url: String) {
@@ -144,11 +151,25 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                 .circleCrop()
                 .into(imageViewAvatar)
             textViewSubredditName.text = displayName
+            val drawable: Drawable?
             if (userIsSubscriber == true) {
                 buttonSubscribe.text = getString(R.string.unsubscribe)
+                buttonSubscribe.setBackgroundColor(R.drawable.rectangle_7)
+                drawable = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.subscribed_white,
+                    context?.theme
+                )
             } else {
                 buttonSubscribe.text = getString(R.string.subscribe)
+                buttonSubscribe.setBackgroundColor(R.drawable.rectangle_8)
+                drawable = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.subscribe_white,
+                    context?.theme
+                )
             }
+            buttonSubscribe.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
             buttonSubscribe.setOnClickListener {
                 viewModel.subscribeUnsubscribe(displayName.toString(), userIsSubscriber == true)
             }
