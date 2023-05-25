@@ -219,7 +219,10 @@ data class DataX(
     var ups: Int,
     @SerializedName("num_comments")
     val numComments: Int?,
-
+    @SerializedName("body")
+    val body: String?,
+    @SerializedName("body_html")
+    val bodyHtml: String?,
 
     @SerializedName("wls")
     val wls: Any

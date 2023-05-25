@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewItemComment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
+
+        <ImageView
+            android:id="@+id/imageViewCommenterAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textViewCommentAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/blue_main"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewCommenterAvatar"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCommentDateTime"
+            app:layout_constraintStart_toEndOf="@+id/imageViewCommenterAvatar"
+            app:layout_constraintTop_toTopOf="@+id/imageViewCommenterAvatar"
+            tools:text="Alex" />
+
+        <TextView
+            android:id="@+id/textViewCommentDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textViewCommentAuthor"
+            tools:text="19/08/2022 13:08" />
+
+        <TextView
+            android:id="@+id/textViewComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewCommenterAvatar"
+            tools:text="Comments that are uncivil, racist, misogynistic, misandrist, or contain political name calling will be removed and the poster subject to ban at moderators discretion.\n\nHelp us make this a better community by..." />
+
+        <ImageButton
+            android:id="@+id/imageButtonVoteUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/vote_up"
+            android:src="@drawable/vote_key_up_grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewComment" />
+
+        <TextView
+            android:id="@+id/textViewCommentScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVoteUp"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonVoteUp"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonVoteUp"
+            tools:text="16" />
+
+        <ImageButton
+            android:id="@+id/imageButtonVoteDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/vote_down"
+            android:src="@drawable/vote_key_down_grey"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVoteUp"
+            app:layout_constraintStart_toEndOf="@+id/textViewCommentScore"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonVoteUp" />
+
+        <ImageView
+            android:id="@+id/imageViewCommentDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVoteUp"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewCommentAnswer"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonVoteUp"
+            app:srcCompat="@drawable/download_grey" />
+
+        <ImageView
+            android:id="@+id/imageViewCommentAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButtonVoteUp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageButtonVoteUp"
+            app:srcCompat="@drawable/answer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

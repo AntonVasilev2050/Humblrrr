@@ -31,6 +31,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 const val USER_NAME = "user_name"
+const val POST_ID = "post_id"
+const val POST_TITLE = "post_title"
 
 @AndroidEntryPoint
 class PostsFragment : Fragment(R.layout.fragment_posts) {
@@ -41,12 +43,21 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         onClick = { children: Children -> onItemClick(children) },
         onClickShare = { url: String -> onShareClick(url) },
         onAuthorClick = { authorName: String -> onAuthorClick(authorName) },
-        onVoteClick = { dir, id, position -> onVoteClick(dir, id, position) }
+        onVoteClick = { dir, id, position -> onVoteClick(dir, id, position) },
+        onOpenCommentsClick = { children: Children -> onClickOpenComments(children) }
     )
+
     var voteDirection = 0
 
     private fun showToast(msg: String?) {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onClickOpenComments(children: Children) {
+        val bundle = Bundle()
+        bundle.putString(POST_ID, children.data.id)
+        bundle.putString(POST_TITLE, children.data.title)
+        findNavController().navigate(R.id.action_postsFragment_to_commentsFragment, bundle)
     }
 
     private fun onVoteClick(dir: Int, id: String, position: Int) {
@@ -74,7 +85,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     }
 
     private fun onItemClick(children: Children) {
-        showToast("${children.data.id} was clicked")
+        showToast("click")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

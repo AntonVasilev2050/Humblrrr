@@ -4,28 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.PostsFragment">
+    tools:context=".presentation.CommentsFragment">
 
-    <ImageView
-        android:id="@+id/imageViewSubredditImage"
-        android:layout_width="0dp"
-        android:layout_height="85dp"
-        android:scaleType="fitXY"
+    <TextView
+        android:id="@+id/textViewPostTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/subreddit_background_picture" />
+        tools:text="title" />
 
     <TextView
-        android:id="@+id/textViewSubredditName"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewPostContent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_marginHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewAvatar"
-        tools:text="Subreddit Name" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPostTitle"
+        tools:text="content content content content content content content content content " />
+
+    <ImageView
+        android:id="@+id/imageViewPostContent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/reddit_s_image"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPostContent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
@@ -34,46 +49,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSubscribe">
+        app:layout_constraintTop_toBottomOf="@+id/textViewCommentsOnTopLabel">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewPosts"
+            android:id="@+id/recyclerViewComments"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="1dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
             app:spanCount="1"
-            tools:listitem="@layout/item_post" />
+            tools:listitem="@layout/item_comment" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <ImageView
-        android:id="@+id/imageViewAvatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="-70dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewSubredditImage"
-        tools:src="@tools:sample/avatars"
-        android:contentDescription="@string/subreddit_logo" />
-
-    <Button
-        android:id="@+id/buttonSubscribe"
+    <TextView
+        android:id="@+id/textViewCommentsOnTopLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text=""
-        android:textSize="20sp"
+        android:text="Comments to the post:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSubredditName"
-        android:contentDescription="@string/subscribe_unsubscribe_the_reddit_button"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPostContent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

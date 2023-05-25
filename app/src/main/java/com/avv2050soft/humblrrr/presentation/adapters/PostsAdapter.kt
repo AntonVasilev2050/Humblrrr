@@ -13,7 +13,8 @@ class PostsAdapter(
     private val onClick: (Children) -> Unit,
     private val onClickShare: (String) -> Unit,
     private val onAuthorClick: (String) -> Unit,
-    private val onVoteClick: (Int, String, Int) -> Unit
+    private val onVoteClick: (Int, String, Int) -> Unit,
+    private val onOpenCommentsClick: (Children) -> Unit
 ) : PagingDataAdapter<Children, PostViewHolder>(DiffUtilCallbackChildren()) {
 
     fun updatePostScore(data: ApiResult<Int>, voteDirection: Int) {
@@ -58,6 +59,10 @@ class PostsAdapter(
 
                 imageButtonVoteDown.setOnClickListener {
                     onVoteClick.invoke(-1, item.data.name, position)
+                }
+
+                imageButtonOpenComments.setOnClickListener {
+                    onOpenCommentsClick.invoke(item)
                 }
             }
         }

@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:paddingStart="16dp"
-            android:textColor="@color/black"
+            android:textColor="@color/blue_main"
             android:textSize="20sp"
             tools:text="author" />
 

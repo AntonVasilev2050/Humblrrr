@@ -3,7 +3,6 @@ package com.avv2050soft.humblrrr.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.databinding.ItemSubredditBinding
@@ -90,12 +89,6 @@ class SubredditAdapter(
     }
 }
 
-class DiffUtilCallbackChildren : DiffUtil.ItemCallback<Children>() {
-    override fun areItemsTheSame(oldItem: Children, newItem: Children): Boolean =
-        oldItem.data.id == newItem.data.id
 
-    override fun areContentsTheSame(oldItem: Children, newItem: Children): Boolean =
-        oldItem == newItem
-}
 
 class SubredditViewHolder(val binding: ItemSubredditBinding) : RecyclerView.ViewHolder(binding.root)

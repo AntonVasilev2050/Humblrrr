@@ -62,12 +62,20 @@
         <action
             android:id="@+id/action_postsFragment_to_userInfoFragment"
             app:destination="@id/userInfoFragment" />
+        <action
+            android:id="@+id/action_postsFragment_to_commentsFragment"
+            app:destination="@id/commentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userInfoFragment"
         android:name="com.avv2050soft.humblrrr.presentation.UserInfoFragment"
         android:label="fragment_user_info"
         tools:layout="@layout/fragment_user_info" />
+    <fragment
+        android:id="@+id/commentsFragment"
+        android:name="com.avv2050soft.humblrrr.presentation.CommentsFragment"
+        android:label="fragment_comments"
+        tools:layout="@layout/fragment_comments" />
 
 
 </navigation>
