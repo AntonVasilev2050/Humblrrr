@@ -26,6 +26,10 @@ class RedditRepositoryImpl : RedditRepository {
             .searchSubreddits(token = accessToken, query = query, afterKey = afterKey)
     }
 
+    override suspend fun getComments(postId: String): List<Response> {
+        return RedditApi.create().getComments(token = accessToken, postId = postId)
+    }
+
     override suspend fun vote(dir: Int, id: String) {
         RedditApi.create().vote(token = accessToken, direction = dir, id = id)
     }
@@ -58,5 +62,13 @@ class RedditRepositoryImpl : RedditRepository {
 
     override suspend fun getUserProfile(): UserProfile {
         return RedditApi.create().getUserProfile(token = accessToken)
+    }
+
+    override suspend fun makeFriends(userName: String) {
+        RedditApi.create().makeFriends(token = accessToken, userName = userName)
+    }
+
+    override suspend fun doNotMakeFriends(userName: String) {
+        RedditApi.create().doNotMakeFriends(token = accessToken, userName = userName)
     }
 }

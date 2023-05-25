@@ -9,33 +9,32 @@
     <ImageView
         android:id="@+id/imageViewSubredditImage"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="85dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/subreddit_background_picture" />
 
     <TextView
         android:id="@+id/textViewSubredditName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewSubredditImage"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewAvatar"
         tools:text="Subreddit Name" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSubredditName">
+        app:layout_constraintTop_toBottomOf="@+id/buttonSubscribe">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPosts"
@@ -48,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSubredditName"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSubscribe"
             app:spanCount="1"
             tools:listitem="@layout/item_post" />
 
@@ -58,19 +57,23 @@
         android:id="@+id/imageViewAvatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewSubredditImage"
-        app:layout_constraintStart_toStartOf="@+id/imageViewSubredditImage"
-        app:layout_constraintTop_toTopOf="@+id/imageViewSubredditImage"
-        tools:src="@tools:sample/avatars" />
+        android:layout_marginTop="-70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewSubredditImage"
+        tools:src="@tools:sample/avatars"
+        android:contentDescription="@string/subreddit_logo" />
 
     <Button
         android:id="@+id/buttonSubscribe"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Subscribe"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewSubredditImage"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewSubredditImage"
-        app:layout_constraintTop_toTopOf="@+id/imageViewSubredditImage" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubredditName"
+        android:contentDescription="@string/subscribe_unsubscribe_the_reddit_button"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

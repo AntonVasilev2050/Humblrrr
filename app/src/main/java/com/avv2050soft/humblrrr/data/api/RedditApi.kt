@@ -7,11 +7,16 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+
+data class RequestBody(val name: String)
 
 interface RedditApi {
 
@@ -19,13 +24,13 @@ interface RedditApi {
     suspend fun getNewSubreddits(
         @Header("Authorization") token: String,
         @Query("after") afterKey: String
-    ) : Response
+    ): Response
 
     @GET("/subreddits/popular")
     suspend fun getPopularSubreddits(
         @Header("Authorization") token: String,
         @Query("after") afterKey: String
-    ) : Response
+    ): Response
 
     @GET("/subreddits/search")
     suspend fun searchSubreddits(
@@ -45,7 +50,7 @@ interface RedditApi {
     suspend fun getComments(
         @Header("Authorization") token: String,
         @Path("postId") postId: String
-    ): Response
+    ): List<Response>
 
     @POST("/api/vote")
     suspend fun vote(
@@ -85,6 +90,19 @@ interface RedditApi {
     suspend fun getUserProfile(
         @Header("Authorization") token: String,
     ): UserProfile
+
+    @PUT("/api/v1/me/friends/{username}")
+    suspend fun makeFriends(
+        @Header("Authorization") token: String,
+        @Path("username") userName: String,
+        @Body requestBody: RequestBody = RequestBody(userName)
+    )
+
+    @DELETE("/api/v1/me/friends/{username}")
+    suspend fun doNotMakeFriends(
+        @Header("Authorization") token: String,
+        @Path("username") userName: String,
+    )
 
     companion object {
         private const val BASE_URL = "https://oauth.reddit.com"

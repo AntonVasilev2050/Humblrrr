@@ -40,8 +40,8 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     private val postsAdapter = PostsAdapter(
         onClick = { children: Children -> onItemClick(children) },
         onClickShare = { url: String -> onShareClick(url) },
-        onAuthorClick = { authorName: String -> onAuthorClick(authorName)},
-        onVoteClick = { dir, id, position -> onVoteClick(dir, id, position)}
+        onAuthorClick = { authorName: String -> onAuthorClick(authorName) },
+        onVoteClick = { dir, id, position -> onVoteClick(dir, id, position) }
     )
     var voteDirection = 0
 
@@ -117,8 +117,8 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED){
-                viewModel.voteChannel.collect{result ->
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.voteChannel.collect { result ->
                     if (result is ApiResult.Error) {
                         showToast(
                             UiText.ResourceString(R.string.something_went_wrong)
@@ -154,7 +154,13 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
             val drawable: Drawable?
             if (userIsSubscriber == true) {
                 buttonSubscribe.text = getString(R.string.unsubscribe)
-                buttonSubscribe.setBackgroundColor(R.drawable.rectangle_7)
+                buttonSubscribe.setBackgroundColor(
+                    ResourcesCompat.getColor(
+                        resources,
+                        R.color.orange,
+                        context?.theme
+                    )
+                )
                 drawable = ResourcesCompat.getDrawable(
                     resources,
                     R.drawable.subscribed_white,
@@ -162,7 +168,13 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                 )
             } else {
                 buttonSubscribe.text = getString(R.string.subscribe)
-                buttonSubscribe.setBackgroundColor(R.drawable.rectangle_8)
+                buttonSubscribe.setBackgroundColor(
+                    ResourcesCompat.getColor(
+                        resources,
+                        R.color.blue_main,
+                        context?.theme
+                    )
+                )
                 drawable = ResourcesCompat.getDrawable(
                     resources,
                     R.drawable.subscribe_white,

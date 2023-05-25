@@ -13,16 +13,9 @@
         android:id="@+id/linearLayoutItemPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:showDividers="middle">
-
-        <TextView
-            android:id="@+id/textViewSubreddit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            tools:text="r/subreddit" />
 
         <TextView
             android:id="@+id/textViewAuthor"
@@ -42,7 +35,7 @@
             android:layout_marginBottom="8dp"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="italic"
+            android:textStyle="bold|italic"
             tools:text="title" />
 
         <TextView
@@ -128,6 +121,5 @@
                 android:src="@drawable/baseline_share_24_black" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
