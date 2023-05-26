@@ -12,6 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.databinding.FragmentUserProfileBinding
 import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
+import com.avv2050soft.humblrrr.presentation.utils.showBottomView
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showBottomView(requireActivity())
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -36,6 +38,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
 
         binding.buttonLogout.setOnClickListener {
             findNavController().navigate(R.id.action_userProfileFragment_to_logoutFragment)
+        }
+
+        binding.buttonFriends.setOnClickListener {
+            findNavController().navigate(R.id.action_userProfileFragment_to_userFriendsFragment)
         }
     }
 

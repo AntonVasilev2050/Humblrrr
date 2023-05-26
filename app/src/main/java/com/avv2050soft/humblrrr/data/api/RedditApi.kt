@@ -1,5 +1,6 @@
 package com.avv2050soft.humblrrr.data.api
 
+import com.avv2050soft.humblrrr.domain.models.friends.UserFriends
 import com.avv2050soft.humblrrr.domain.models.response.Response
 import com.avv2050soft.humblrrr.domain.models.userinfo.UserInfo
 import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
@@ -103,6 +104,11 @@ interface RedditApi {
         @Header("Authorization") token: String,
         @Path("username") userName: String,
     )
+
+    @GET("/api/v1/me/friends")
+    suspend fun getUserFriends(
+        @Header("Authorization") token: String,
+    ): UserFriends
 
     companion object {
         private const val BASE_URL = "https://oauth.reddit.com"

@@ -41,4 +41,7 @@
     <string name="subreddit_background_picture">Subreddit background picture</string>
     <string name="subscribe_unsubscribe_the_reddit_button">Subscribe-unsubscribe the reddit button</string>
     <string name="comments_to_the_post">Comments to the post:</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="comments_label">Comments:</string>
+    <string name="karma_label">Karma:</string>
 </resources>

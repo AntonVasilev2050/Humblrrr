@@ -2,6 +2,7 @@ package com.avv2050soft.humblrrr.data.repository
 
 import com.avv2050soft.humblrrr.data.api.RedditApi
 import com.avv2050soft.humblrrr.data.auth.TokenStorage
+import com.avv2050soft.humblrrr.domain.models.friends.UserFriends
 import com.avv2050soft.humblrrr.domain.models.response.Response
 import com.avv2050soft.humblrrr.domain.models.userinfo.UserInfo
 import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
@@ -70,5 +71,9 @@ class RedditRepositoryImpl : RedditRepository {
 
     override suspend fun doNotMakeFriends(userName: String) {
         RedditApi.create().doNotMakeFriends(token = accessToken, userName = userName)
+    }
+
+    override suspend fun getUserFriends(): UserFriends {
+        return RedditApi.create().getUserFriends(token = accessToken)
     }
 }

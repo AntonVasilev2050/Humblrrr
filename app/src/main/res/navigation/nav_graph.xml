@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_userProfileFragment_to_logoutFragment"
             app:destination="@id/logoutFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userFriendsFragment"
+            app:destination="@id/userFriendsFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
@@ -76,6 +79,11 @@
         android:name="com.avv2050soft.humblrrr.presentation.CommentsFragment"
         android:label="fragment_comments"
         tools:layout="@layout/fragment_comments" />
+    <fragment
+        android:id="@+id/userFriendsFragment"
+        android:name="com.avv2050soft.humblrrr.presentation.UserFriendsFragment"
+        android:label="fragment_user_friends"
+        tools:layout="@layout/fragment_user_friends" />
 
 
 </navigation>
