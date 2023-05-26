@@ -13,21 +13,32 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class UserFriendsAdapter(
-
+    private val onDoNotBeFriendsClick: (Children, position: Int) -> Unit,
 ) : PagingDataAdapter<Children, FriendsViewHolder>(DiffUtilCallbackFriends()) {
+
+    fun unfriendUser(position: Int) {
+//        snapshot()[position]?.let {
+//            it.name
+//        }
+        notifyItemRemoved(position)
+    }
+
     override fun onBindViewHolder(holder: FriendsViewHolder, position: Int) {
         val item = getItem(position)
-        with(holder.binding){
+        with(holder.binding) {
             item?.let {
                 Glide
                     .with(imageViewUserFriendAvatar.context)
-                        // TODO: load a real avatar of the user
+                    // TODO: load a real avatar of the user
                     .load(it.id)
                     .placeholder(R.drawable.reddit_placeholder)
                     .into(imageViewUserFriendAvatar)
                 textViewUserFriendName.text = it.name
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
                 textViewUserFriendDateTime.text = dateFormat.format((it.date * 1000L))
+                buttonUserFriendsDoNotBeFriend.setOnClickListener {
+                    onDoNotBeFriendsClick.invoke(item, position)
+                }
             }
         }
     }
@@ -47,4 +58,4 @@ class DiffUtilCallbackFriends : DiffUtil.ItemCallback<Children>() {
         oldItem == newItem
 }
 
-class FriendsViewHolder(val binding : ItemFriendBinding) : RecyclerView.ViewHolder(binding.root)
+class FriendsViewHolder(val binding: ItemFriendBinding) : RecyclerView.ViewHolder(binding.root)

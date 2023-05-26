@@ -31,7 +31,7 @@ class UserInfoViewModel @Inject constructor(
 
     fun getUserInfo(userName: String) {
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 userInfo = repository.getUserInfo(userName)
             }.onSuccess {
                 _userInfoStateFlow.value = userInfo
@@ -43,7 +43,7 @@ class UserInfoViewModel @Inject constructor(
 
     fun makeFriends(userName: String) {
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 repository.makeFriends(userName)
             }.onSuccess {
                 _makeFriendsChannel.send(ApiResult.Success("Success"))
@@ -55,7 +55,7 @@ class UserInfoViewModel @Inject constructor(
 
     fun doNotMakeFriends(userName: String) {
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 repository.doNotMakeFriends(userName)
             }.onSuccess {
                 _doNotMakeFriendsChannel.send(ApiResult.Success("Success"))
