@@ -38,7 +38,7 @@ class PostsViewModel @Inject constructor(
     fun subscribeUnsubscribe(displayName: String, isUserSubscriber: Boolean) {
         viewModelScope.launch(Dispatchers.Default) {
 //            _subscribeChannel.send(ApiResult.Loading(position))
-            kotlin.runCatching {
+            runCatching {
                 if (isUserSubscriber) {
                     repository.subscribeUnsubscribe("unsub", displayName)
                 } else {
@@ -57,7 +57,7 @@ class PostsViewModel @Inject constructor(
 
     fun vote(dir: Int, id: String, position: Int) {
         viewModelScope.launch {
-            kotlin.runCatching {
+            runCatching {
                 repository.vote(dir, id)
             }.fold(
                 onSuccess = { _voteChannel.send(ApiResult.Success(position)) },

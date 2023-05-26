@@ -14,6 +14,7 @@ import com.avv2050soft.humblrrr.databinding.FragmentCommentsBinding
 import com.avv2050soft.humblrrr.presentation.adapters.CommentsAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -48,6 +49,7 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         super.onViewCreated(view, savedInstanceState)
         val postId = arguments?.getString(POST_ID)
         val postTitle = arguments?.getString(POST_TITLE)
+        val postContentPictureUrl = arguments?.getString(POST_CONTENT_PICTURE)
         CommentsPagingSource.postId = postId.toString()
         hideAppbarAndBottomView(requireActivity())
         binding.recyclerViewComments.adapter = commentsAdapter.withLoadStateFooter(CommonLoadStateAdapter())
@@ -60,6 +62,11 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
             commentsAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        binding.textViewPostTitle.text = postTitle
+        with(binding){
+            textViewPostTitle.text = postTitle
+            Glide.with(imageViewPostContent.context)
+                .load(postContentPictureUrl)
+                .into(imageViewPostContent)
+        }
     }
 }
