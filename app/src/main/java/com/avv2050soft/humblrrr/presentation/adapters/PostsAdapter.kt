@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.databinding.ItemPostBinding
 import com.avv2050soft.humblrrr.domain.models.ApiResult
 import com.avv2050soft.humblrrr.domain.models.response.Children
+import com.avv2050soft.humblrrr.presentation.utils.toStringWithKNotation
 import com.bumptech.glide.Glide
 
 class PostsAdapter(
@@ -37,8 +38,8 @@ class PostsAdapter(
                     .with(imageViewContent.context)
                     .load(it.data.url)
                     .into(imageViewContent)
-                textViewPostScore.text = it.data.ups.toString()
-                textViewCommentsCount.text = it.data.numComments.toString()
+                textViewPostScore.text = it.data.ups.toStringWithKNotation()
+                textViewCommentsCount.text = it.data.numComments?.toStringWithKNotation()
                 root.setOnClickListener {
                     if (position != RecyclerView.NO_POSITION) {
                         onClick.invoke(item)

@@ -55,12 +55,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             toast(it)
         }
         viewModel.authSuccessFlow.launchAndCollectIn(viewLifecycleOwner) {
-
             findNavController().navigate(R.id.subredditsFragment)
-
-
-//            UnsplashRepositoryImpl.accessToken = "Bearer ${TokenStorage.accessToken}"
-
             Log.d(
                 "Oauth",
                 "access: ${TokenStorage.accessToken}"
@@ -90,7 +85,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             // авторизация прошла успешно, меняем код на токен
             tokenExchangeRequest != null ->
                 viewModel.onAuthCodeReceived(tokenExchangeRequest)
-
         }
     }
 }

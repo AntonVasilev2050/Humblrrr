@@ -16,7 +16,6 @@ import net.openid.appauth.AuthorizationService
 class LogoutViewModel(application: Application) : AndroidViewModel(application) {
     private val authRepository = AuthRepository()
     private val authService: AuthorizationService = AuthorizationService(getApplication())
-//    private val databaseRepository = DatabaseRepositoryImpl(application)
 
     private val toastEventChannel = Channel<Int>(Channel.BUFFERED)
     private val logoutPageEventChannel = Channel<Intent>(Channel.BUFFERED)
@@ -43,9 +42,6 @@ class LogoutViewModel(application: Application) : AndroidViewModel(application) 
             authRepository.getEndSessionRequest(),
             customTabsIntent
         )
-//        viewModelScope.launch {
-//            databaseRepository.deleteAllPhotosFromDb()
-//        }
         logoutPageEventChannel.trySendBlocking(logoutPageIntent)
     }
 

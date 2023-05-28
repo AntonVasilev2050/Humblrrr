@@ -24,6 +24,9 @@ import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.PostsAdapter
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
+import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
+import com.avv2050soft.humblrrr.presentation.utils.toast
+import com.avv2050soft.humblrrr.presentation.utils.toastString
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -38,6 +41,12 @@ const val POST_CONTENT_PICTURE = "post_content_picture"
 @AndroidEntryPoint
 class PostsFragment : Fragment(R.layout.fragment_posts) {
 
+    var voteDirection = 0
+    private var userIsSubscriber: Boolean? = null
+    private var icon: String? = null
+    private var bannerImage: String? = null
+    private var displayName: String? = null
+
     private val binding by viewBinding(FragmentPostsBinding::bind)
     private val viewModel: PostsViewModel by viewModels()
     private val postsAdapter = PostsAdapter(
@@ -47,12 +56,6 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         onVoteClick = { dir, id, position -> onVoteClick(dir, id, position) },
         onOpenCommentsClick = { children: Children -> onClickOpenComments(children) }
     )
-
-    var voteDirection = 0
-
-    private fun showToast(msg: String?) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-    }
 
     private fun onClickOpenComments(children: Children) {
         val bundle = Bundle()
@@ -65,7 +68,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     private fun onVoteClick(dir: Int, id: String, position: Int) {
         voteDirection = dir
         viewModel.vote(dir, id, position)
-        showToast("voted $dir")
+        toastString("voted $dir")
     }
 
     private fun onAuthorClick(authorName: String) {
@@ -82,20 +85,20 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         try {
             requireContext().startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            showToast(e.message)
+            toastString(e.message)
         }
     }
 
     private fun onItemClick(children: Children) {
-        showToast("click")
+        onClickOpenComments(children)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val displayName = arguments?.getString(DISPLAY_NAME_KEY)
-        val bannerImage = arguments?.getString(BANNER_IMAGE_KEY)
-        val icon = arguments?.getString(ICON_KEY)
-        var userIsSubscriber = arguments?.getBoolean(IS_SUBSCRIBER_KEY)
+        displayName = arguments?.getString(DISPLAY_NAME_KEY)
+        bannerImage = arguments?.getString(BANNER_IMAGE_KEY)
+        icon = arguments?.getString(ICON_KEY)
+        userIsSubscriber = arguments?.getBoolean(IS_SUBSCRIBER_KEY)
         CommonPagingSource.subredditName = displayName.toString()
         hideAppbarAndBottomView(requireActivity())
         binding.recyclerViewPosts.adapter =
@@ -111,46 +114,30 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
             postsAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        setupTopBanner(bannerImage, icon, displayName, userIsSubscriber)
+        setupTopBanner()
+        setupObservers()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.subscribeChannel.collect { result ->
-                    if (result is ApiResult.Error) {
-                        showToast(
-                            UiText.ResourceString(R.string.something_went_wrong)
-                                .asString(requireContext())
-                        )
-                    } else {
-                        userIsSubscriber = !userIsSubscriber!!
-                        setupTopBanner(bannerImage, icon, displayName, userIsSubscriber)
-                    }
-                }
+    private fun setupObservers() {
+        viewModel.subscribeChannel.launchAndCollectIn(viewLifecycleOwner){
+            if (it is ApiResult.Error) {
+                toast(R.string.something_went_wrong)
+            } else {
+                userIsSubscriber = !userIsSubscriber!!
+                setupTopBanner()
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.voteChannel.collect { result ->
-                    if (result is ApiResult.Error) {
-                        showToast(
-                            UiText.ResourceString(R.string.something_went_wrong)
-                                .asString(requireContext())
-                        )
-                    } else {
-                        postsAdapter.updatePostScore(result, voteDirection)
-                    }
-                }
+        viewModel.voteChannel.launchAndCollectIn(viewLifecycleOwner){
+            if (it is ApiResult.Error) {
+                toast(R.string.something_went_wrong)
+            } else {
+                postsAdapter.updatePostScore(it, voteDirection)
             }
         }
     }
 
-    private fun setupTopBanner(
-        bannerImage: String?,
-        icon: String?,
-        displayName: String?,
-        userIsSubscriber: Boolean?
-    ) {
+    private fun setupTopBanner() {
         with(binding) {
             Glide
                 .with(imageViewSubredditImage.context)
@@ -164,7 +151,13 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                 .circleCrop()
                 .into(imageViewAvatar)
             textViewSubredditName.text = displayName
-            val drawable: Drawable?
+            setupSubscribeButton()
+        }
+    }
+
+    private fun setupSubscribeButton() {
+        val drawable: Drawable?
+        with(binding) {
             if (userIsSubscriber == true) {
                 buttonSubscribe.text = getString(R.string.unsubscribe)
                 buttonSubscribe.setBackgroundColor(

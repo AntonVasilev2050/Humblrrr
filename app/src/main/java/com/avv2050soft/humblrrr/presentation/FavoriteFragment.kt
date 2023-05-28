@@ -114,7 +114,6 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         with(binding) {
             toggleButtonSubreddits.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    // выполните действия для кнопки 1
                     loadFavoriteSubreddits()
                     toggleButtonPosts.isChecked = false
                     setupButtons(
@@ -127,7 +126,6 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             }
             toggleButtonPosts.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    // выполните действия для кнопки 2
                     loadFavoritePosts()
                     toggleButtonSubreddits.isChecked = false
                     setupButtons(
