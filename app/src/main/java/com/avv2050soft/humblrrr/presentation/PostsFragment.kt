@@ -5,13 +5,10 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -19,7 +16,6 @@ import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.data.CommonPagingSource
 import com.avv2050soft.humblrrr.databinding.FragmentPostsBinding
 import com.avv2050soft.humblrrr.domain.models.ApiResult
-import com.avv2050soft.humblrrr.domain.models.UiText
 import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.PostsAdapter
@@ -31,7 +27,6 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 const val USER_NAME = "user_name"
 const val POST_ID = "post_id"
@@ -119,7 +114,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     }
 
     private fun setupObservers() {
-        viewModel.subscribeChannel.launchAndCollectIn(viewLifecycleOwner){
+        viewModel.subscribeChannel.launchAndCollectIn(viewLifecycleOwner) {
             if (it is ApiResult.Error) {
                 toast(R.string.something_went_wrong)
             } else {
@@ -128,7 +123,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
             }
         }
 
-        viewModel.voteChannel.launchAndCollectIn(viewLifecycleOwner){
+        viewModel.voteChannel.launchAndCollectIn(viewLifecycleOwner) {
             if (it is ApiResult.Error) {
                 toast(R.string.something_went_wrong)
             } else {
@@ -151,46 +146,39 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                 .circleCrop()
                 .into(imageViewAvatar)
             textViewSubredditName.text = displayName
-            setupSubscribeButton()
-        }
-    }
-
-    private fun setupSubscribeButton() {
-        val drawable: Drawable?
-        with(binding) {
             if (userIsSubscriber == true) {
-                buttonSubscribe.text = getString(R.string.unsubscribe)
-                buttonSubscribe.setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.orange,
-                        context?.theme
-                    )
-                )
-                drawable = ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.subscribed_white,
-                    context?.theme
+                setupButton(
+                    getString(R.string.unsubscribe),
+                    R.color.orange,
+                    R.drawable.subscribed_white
                 )
             } else {
-                buttonSubscribe.text = getString(R.string.subscribe)
-                buttonSubscribe.setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.blue_main,
-                        context?.theme
-                    )
-                )
-                drawable = ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.subscribe_white,
-                    context?.theme
+                setupButton(
+                    getString(R.string.subscribe),
+                    R.color.blue_main,
+                    R.drawable.subscribe_white
                 )
             }
-            buttonSubscribe.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
             buttonSubscribe.setOnClickListener {
                 viewModel.subscribeUnsubscribe(displayName.toString(), userIsSubscriber == true)
             }
         }
+    }
+
+    private fun setupButton(buttonText: String, buttonColor: Int, buttonIcon: Int) {
+        binding.buttonSubscribe.text = buttonText
+        binding.buttonSubscribe.setBackgroundColor(
+            ResourcesCompat.getColor(
+                resources,
+                buttonColor,
+                context?.theme
+            )
+        )
+        val drawable  = ResourcesCompat.getDrawable(
+            resources,
+            buttonIcon,
+            context?.theme
+        )
+        binding.buttonSubscribe.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
     }
 }
