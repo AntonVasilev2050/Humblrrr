@@ -14,6 +14,7 @@ import com.avv2050soft.humblrrr.databinding.FragmentCommentsBinding
 import com.avv2050soft.humblrrr.presentation.adapters.CommentsAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
+import com.avv2050soft.humblrrr.presentation.utils.toastString
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -29,20 +30,20 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         onAuthorClick = { authorName: String -> onAuthorClick(authorName) },
         onVoteClick = { dir, id, position -> onVoteClick(dir, id, position) }
     )
-    private fun showToast(msg: String?) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-    }
 
     private fun onAuthorClick(authorName: String) {
-        showToast("Comment of $authorName was clicked")
+        // TODO: Show author info
     }
 
     private fun onVoteClick(dir: Int, id: String, position: Int) {
         var voteMessage = ""
-        if (dir == 1){
-            voteMessage = "+1"
-        }else voteMessage = "-1"
-        showToast("Vote $voteMessage")
+        voteMessage = if (dir == 1) {
+            "+1"
+        } else "-1"
+        toastString(buildString {
+            append(resources.getString(R.string.vote))
+            append(voteMessage)
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +53,8 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         val postContentPictureUrl = arguments?.getString(POST_CONTENT_PICTURE)
         CommentsPagingSource.postId = postId.toString()
         hideAppbarAndBottomView(requireActivity())
-        binding.recyclerViewComments.adapter = commentsAdapter.withLoadStateFooter(CommonLoadStateAdapter())
+        binding.recyclerViewComments.adapter =
+            commentsAdapter.withLoadStateFooter(CommonLoadStateAdapter())
         binding.swipeRefresh.setOnRefreshListener { commentsAdapter.refresh() }
         commentsAdapter.loadStateFlow.onEach {
             binding.swipeRefresh.isRefreshing = it.refresh == LoadState.Loading
@@ -62,7 +64,7 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
             commentsAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        with(binding){
+        with(binding) {
             textViewPostTitle.text = postTitle
             Glide.with(imageViewPostContent.context)
                 .load(postContentPictureUrl)

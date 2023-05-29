@@ -17,6 +17,8 @@ import com.avv2050soft.humblrrr.domain.models.ApiResult
 import com.avv2050soft.humblrrr.domain.models.UiText
 import com.avv2050soft.humblrrr.domain.models.userinfo.UserInfo
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbar
+import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
+import com.avv2050soft.humblrrr.presentation.utils.toastString
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -30,10 +32,6 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
     private val binding by viewBinding(FragmentUserInfoBinding::bind)
     private val viewModel: UserInfoViewModel by viewModels()
 
-    private fun showToast(msg: String?) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val userName = arguments?.getString(USER_NAME)
@@ -42,39 +40,25 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
         userName?.let { viewModel.getUserInfo(it) }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.userInfoStateFlow.collect { userInfo ->
-                    userInfo?.let {
-                        showUserInfo(userInfo)
+        viewModel.userInfoStateFlow.launchAndCollectIn(viewLifecycleOwner) { userInfo ->
+            userInfo?.let {
+                showUserInfo(userInfo)
 
-                        binding.buttonBeFriends.setOnClickListener {
-                            beFriends(userInfo)
-                        }
-                    }
+                binding.buttonBeFriends.setOnClickListener {
+                    beFriends(userInfo)
                 }
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.makeFriendsChannel.collect { result ->
-                    if (result is ApiResult.Error) {
-                        showToast(
-                            UiText.ResourceString(R.string.something_went_wrong)
-                                .asString(requireContext())
-                        )
-                    }
-                }
+        viewModel.makeFriendsChannel.launchAndCollectIn(viewLifecycleOwner) {
+            if (it is ApiResult.Error) {
+                toastString(resources.getString(R.string.something_went_wrong))
+            }
+        }
 
-                viewModel.doNotMakeFriendsChannel.collect { result ->
-                    if (result is ApiResult.Error) {
-                        showToast(
-                            UiText.ResourceString(R.string.something_went_wrong)
-                                .asString(requireContext())
-                        )
-                    }
-                }
+        viewModel.doNotMakeFriendsChannel.launchAndCollectIn(viewLifecycleOwner) {
+            if (it is ApiResult.Error) {
+                toastString(it.data)
             }
         }
     }
@@ -102,37 +86,36 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
             textViewUserInfoKarma.text = userInfo.data.totalKarma.toString()
             val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
             textViewUserInfoCreated.text = dateFormat.format((userInfo.data.createdUtc * 1000L))
-            val drawable: Drawable?
             if (userInfo.data.isFriend) {
-                buttonBeFriends.text = getString(R.string.don_t_be_friends)
-                buttonBeFriends.setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.orange,
-                        context?.theme
-                    )
-                )
-                drawable = ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.subscribed_white,
-                    context?.theme
+                setupButton(
+                    getString(R.string.don_t_be_friends),
+                    R.color.orange,
+                    R.drawable.subscribed_white
                 )
             } else {
-                buttonBeFriends.text = getString(R.string.be_friends)
-                buttonBeFriends.setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.blue_main,
-                        context?.theme
-                    )
-                )
-                drawable = ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.subscribe_white,
-                    context?.theme
+                setupButton(
+                    getString(R.string.be_friends),
+                    R.color.blue_main,
+                    R.drawable.subscribe_white
                 )
             }
-            buttonBeFriends.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
         }
+    }
+
+    private fun setupButton(buttonText: String, buttonColor: Int, buttonIcon: Int) {
+        binding.buttonBeFriends.text = buttonText
+        binding.buttonBeFriends.setBackgroundColor(
+            ResourcesCompat.getColor(
+                resources,
+                buttonColor,
+                context?.theme
+            )
+        )
+        val drawable = ResourcesCompat.getDrawable(
+            resources,
+            buttonIcon,
+            context?.theme
+        )
+        binding.buttonBeFriends.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
     }
 }

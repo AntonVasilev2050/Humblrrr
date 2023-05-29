@@ -2,7 +2,6 @@ package com.avv2050soft.humblrrr.presentation
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
@@ -105,9 +104,9 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
             binding.swipeRefresh.isRefreshing = it.refresh == LoadState.Loading
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.pagePosts.onEach {
+        viewModel.pagePosts.launchAndCollectIn(viewLifecycleOwner){
             postsAdapter.submitData(it)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
 
         setupTopBanner()
         setupObservers()

@@ -48,7 +48,7 @@ class UserInfoViewModel @Inject constructor(
             }.onSuccess {
                 _makeFriendsChannel.send(ApiResult.Success("Success"))
             }.onFailure {
-                _makeFriendsChannel.send(ApiResult.Error(UiText.ResourceString(R.string.something_went_wrong)))
+                _makeFriendsChannel.send(ApiResult.Error(UiText.DynamicString(it.message.toString())))
             }
         }
     }
@@ -60,7 +60,7 @@ class UserInfoViewModel @Inject constructor(
             }.onSuccess {
                 _doNotMakeFriendsChannel.send(ApiResult.Success("Success"))
             }.onFailure {
-                _doNotMakeFriendsChannel.send(ApiResult.Error(UiText.ResourceString(R.string.something_went_wrong)))
+                _doNotMakeFriendsChannel.send(ApiResult.Error(UiText.DynamicString(it.message.toString())))
             }
         }
     }

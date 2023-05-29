@@ -23,7 +23,9 @@ import com.avv2050soft.humblrrr.domain.models.UiText
 import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.SubredditAdapter
+import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
 import com.avv2050soft.humblrrr.presentation.utils.showBottomView
+import com.avv2050soft.humblrrr.presentation.utils.toastString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -50,10 +52,10 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         },
         onClickShare = { url: String -> onShareClick(url) }
     )
-
-    private fun showToast(msg: String?) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-    }
+//
+//    private fun showToast(msg: String?) {
+//        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+//    }
 
     private fun onShareClick(url: String) {
         val fullUrl = buildString {
@@ -68,7 +70,7 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         try {
             requireContext().startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            showToast(e.message)
+            toastString(e.message)
         }
     }
 
@@ -101,7 +103,7 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         handleToggleButtons()
         observeSubscribeResult()
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     CommonPagingSource.searchQuery = query
@@ -183,18 +185,11 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
     }
 
     private fun observeSubscribeResult() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.subscribeChannel.collect { result ->
-                    if (result is ApiResult.Error) {
-                        showToast(
-                            UiText.ResourceString(R.string.something_went_wrong)
-                                .asString(requireContext())
-                        )
-                    } else {
-                        subredditAdapter.updateElement(result)
-                    }
-                }
+        viewModel.subscribeChannel.launchAndCollectIn(viewLifecycleOwner) {
+            if (it is ApiResult.Error) {
+                toastString(resources.getString(R.string.something_went_wrong))
+            } else {
+                subredditAdapter.updateElement(it)
             }
         }
     }
