@@ -52,7 +52,7 @@ class UserInfoFragment : Fragment(R.layout.fragment_user_info) {
 
         viewModel.makeFriendsChannel.launchAndCollectIn(viewLifecycleOwner) {
             if (it is ApiResult.Error) {
-                toastString(resources.getString(R.string.something_went_wrong))
+                toastString(it.data)
             }
         }
 

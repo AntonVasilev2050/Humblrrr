@@ -12,6 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.databinding.FragmentUserProfileBinding
 import com.avv2050soft.humblrrr.domain.models.userprofile.UserProfile
+import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
 import com.avv2050soft.humblrrr.presentation.utils.showBottomView
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,13 +28,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         super.onViewCreated(view, savedInstanceState)
         showBottomView(requireActivity())
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                userProfileViewModel.getCurrentUserProfile()
-                userProfileViewModel.userProfileStateFlow.collect {
-                    showUserProfile(it)
-                }
-            }
+        userProfileViewModel.userProfileStateFlow.launchAndCollectIn(viewLifecycleOwner){
+            userProfileViewModel.getCurrentUserProfile()
+            showUserProfile(it)
         }
 
         binding.buttonLogout.setOnClickListener {
