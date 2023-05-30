@@ -1,28 +1,21 @@
 package com.avv2050soft.humblrrr.presentation
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.databinding.FragmentUserInfoBinding
 import com.avv2050soft.humblrrr.domain.models.ApiResult
-import com.avv2050soft.humblrrr.domain.models.UiText
 import com.avv2050soft.humblrrr.domain.models.userinfo.UserInfo
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbar
 import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
 import com.avv2050soft.humblrrr.presentation.utils.toastString
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 

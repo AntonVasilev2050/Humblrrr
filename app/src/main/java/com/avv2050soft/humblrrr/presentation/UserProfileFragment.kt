@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
@@ -16,7 +13,6 @@ import com.avv2050soft.humblrrr.presentation.utils.launchAndCollectIn
 import com.avv2050soft.humblrrr.presentation.utils.showBottomView
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {

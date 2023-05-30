@@ -52,10 +52,6 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
         },
         onClickShare = { url: String -> onShareClick(url) }
     )
-//
-//    private fun showToast(msg: String?) {
-//        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-//    }
 
     private fun onShareClick(url: String) {
         val fullUrl = buildString {
@@ -132,7 +128,6 @@ class SubredditsFragment : Fragment(R.layout.fragment_subreddits) {
             handleToggleButtons()
             return@setOnCloseListener false
         }
-
     }
 
     private fun makeSearch() {
