@@ -42,7 +42,10 @@ class PostsAdapter(
                     .into(imageViewContent)
                 if (it.data.isVideo) {
                     videoViewContent.visibility = View.VISIBLE
-                    val videoUri = Uri.parse(it.data.media.redditVideo.fallbackUrl)
+                    val videoUri =  Uri.parse(it.data.media.redditVideo.fallbackUrl.substringBefore("?","?"))
+                    videoViewContent.setOnPreparedListener {
+                        it.start()
+                    }
                     videoViewContent.setVideoURI(videoUri)
                     videoViewContent.start()
                 } else {
