@@ -41,6 +41,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewPostContent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPostContent"
+        app:show_buffering="when_playing"
+        app:show_shuffle_button="true" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="0dp"
@@ -74,6 +84,6 @@
         android:text="@string/comments_to_the_post"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPostContent" />
+        app:layout_constraintTop_toBottomOf="@+id/playerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

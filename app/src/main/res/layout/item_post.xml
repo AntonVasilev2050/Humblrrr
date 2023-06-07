@@ -52,11 +52,18 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/reddit_s_image" />
 
-        <VideoView
-            android:id="@+id/videoViewContent"
+<!--        <VideoView-->
+<!--            android:id="@+id/videoViewContent"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="250dp"-->
+<!--            android:layout_gravity="center"/>-->
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/playerView"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_gravity="center"/>
+            app:show_buffering="when_playing"
+            app:show_shuffle_button="true"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

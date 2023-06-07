@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.databinding.ItemPostBinding
@@ -33,30 +35,32 @@ class PostsAdapter(
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val item = getItem(position)
         with(holder.binding) {
-            item?.let {
-                textViewAuthor.text = it.data.author
-                textViewTitle.text = it.data.title
-                textViewContent.text = it.data.selfText
+            item?.let { children ->
+                textViewAuthor.text = children.data.author
+                textViewTitle.text = children.data.title
+                textViewContent.text = children.data.selfText
                 Glide
                     .with(imageViewContent.context)
-                    .load(it.data.url)
+                    .load(children.data.url)
                     .into(imageViewContent)
-                if (it.data.isVideo) {
-                    videoViewContent.visibility = View.VISIBLE
-                    val videoUri =  Uri.parse(it.data.media.redditVideo.fallbackUrl.substringBefore("?","?"))
-                    videoViewContent.setOnPreparedListener {
-                        it.start()
-                    }
-                    videoViewContent.setVideoURI(videoUri)
-                    val mediaController = MediaController(videoViewContent.context)
-                    videoViewContent.setMediaController(mediaController)
-                    videoViewContent.start()
+                if (children.data.isVideo) {
+                    val videoUri = Uri.parse(
+                        children.data.media.redditVideo.fallbackUrl.substringBefore("?", "?")
+                    )
+                    val player = ExoPlayer.Builder(playerView.context).build()
+                    player.playWhenReady
+                    player.repeatMode
+                    playerView.player = player
+                    val mediaItem = MediaItem.fromUri(videoUri)
+                    player.setMediaItem(mediaItem)
+                    player.prepare()
+                    player.play()
                 } else {
-                    videoViewContent.visibility = View.GONE
+                    playerView.visibility = View.GONE
                 }
 
-                textViewPostScore.text = it.data.ups.toStringWithKNotation()
-                textViewCommentsCount.text = it.data.numComments?.toStringWithKNotation()
+                textViewPostScore.text = children.data.ups.toStringWithKNotation()
+                textViewCommentsCount.text = children.data.numComments?.toStringWithKNotation()
                 root.setOnClickListener {
                     if (position != RecyclerView.NO_POSITION) {
                         onClick.invoke(item)

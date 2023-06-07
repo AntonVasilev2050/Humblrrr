@@ -31,6 +31,8 @@ const val USER_NAME = "user_name"
 const val POST_ID = "post_id"
 const val POST_TITLE = "post_title"
 const val POST_CONTENT_PICTURE = "post_content_picture"
+const val IS_VIDEO = "is_video"
+const val FALLBACK_URL = "fallback_url"
 
 @AndroidEntryPoint
 class PostsFragment : Fragment(R.layout.fragment_posts) {
@@ -56,6 +58,10 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         bundle.putString(POST_ID, children.data.id)
         bundle.putString(POST_TITLE, children.data.title)
         bundle.putString(POST_CONTENT_PICTURE, children.data.url)
+        bundle.putBoolean(IS_VIDEO, children.data.isVideo)
+        if (children.data.isVideo){
+            bundle.putString(FALLBACK_URL, children.data.media.redditVideo.fallbackUrl)
+        }
         findNavController().navigate(R.id.action_postsFragment_to_commentsFragment, bundle)
     }
 
