@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.databinding.ItemPostBinding
@@ -47,6 +48,8 @@ class PostsAdapter(
                         it.start()
                     }
                     videoViewContent.setVideoURI(videoUri)
+                    val mediaController = MediaController(videoViewContent.context)
+                    videoViewContent.setMediaController(mediaController)
                     videoViewContent.start()
                 } else {
                     videoViewContent.visibility = View.GONE

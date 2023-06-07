@@ -84,7 +84,9 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     }
 
     private fun onItemClick(children: Children) {
-        onClickOpenComments(children)
+        if (!children.data.isVideo) {
+            onClickOpenComments(children)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,7 +106,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
             binding.swipeRefresh.isRefreshing = it.refresh == LoadState.Loading
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.pagePosts.launchAndCollectIn(viewLifecycleOwner){
+        viewModel.pagePosts.launchAndCollectIn(viewLifecycleOwner) {
             postsAdapter.submitData(it)
         }
 
@@ -173,7 +175,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
                 context?.theme
             )
         )
-        val drawable  = ResourcesCompat.getDrawable(
+        val drawable = ResourcesCompat.getDrawable(
             resources,
             buttonIcon,
             context?.theme
