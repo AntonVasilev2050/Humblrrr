@@ -16,6 +16,8 @@ import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
 import com.avv2050soft.humblrrr.presentation.utils.toastString
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -66,9 +68,17 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
 
         with(binding) {
             textViewPostTitle.text = postTitle
-            Glide.with(imageViewPostContent.context)
-                .load(postContentPictureUrl)
-                .into(imageViewPostContent)
+            val pictureSize = (resources.displayMetrics.widthPixels / 1.3).toInt()
+            val requestOptions = RequestOptions()
+                .override(pictureSize, pictureSize)
+                .optionalFitCenter()
+            if (!postContentPictureUrl.isNullOrEmpty()) {
+                Glide.with(imageViewPostContent.context)
+                    .load(postContentPictureUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .apply(requestOptions)
+                    .into(imageViewPostContent)
+            }
         }
     }
 }
