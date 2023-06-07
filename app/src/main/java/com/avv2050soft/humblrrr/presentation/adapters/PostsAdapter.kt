@@ -1,6 +1,8 @@
 package com.avv2050soft.humblrrr.presentation.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +40,15 @@ class PostsAdapter(
                     .with(imageViewContent.context)
                     .load(it.data.url)
                     .into(imageViewContent)
+                if (it.data.isVideo) {
+                    videoViewContent.visibility = View.VISIBLE
+                    val videoUri = Uri.parse(it.data.media.redditVideo.fallbackUrl)
+                    videoViewContent.setVideoURI(videoUri)
+                    videoViewContent.start()
+                } else {
+                    videoViewContent.visibility = View.GONE
+                }
+
                 textViewPostScore.text = it.data.ups.toStringWithKNotation()
                 textViewCommentsCount.text = it.data.numComments?.toStringWithKNotation()
                 root.setOnClickListener {

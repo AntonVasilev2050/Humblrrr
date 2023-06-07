@@ -223,6 +223,10 @@ data class DataX(
     val body: String?,
     @SerializedName("body_html")
     val bodyHtml: String?,
+    @SerializedName("media")
+    val media : Media,
+    @SerializedName("is_video")
+    val isVideo: Boolean,
 
     @SerializedName("wls")
     val wls: Any
