@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.avv2050soft.humblrrr.domain.models.response.Children
 import com.avv2050soft.humblrrr.presentation.utils.toStringWithKNotation
 import com.bumptech.glide.Glide
 
+@UnstableApi
 class PostsAdapter(
     private val onClick: (Children) -> Unit,
     private val onClickShare: (String) -> Unit,
@@ -48,9 +51,10 @@ class PostsAdapter(
                         children.data.media.redditVideo.fallbackUrl.substringBefore("?", "?")
                     )
                     val player = ExoPlayer.Builder(playerView.context).build()
-                    player.playWhenReady
-                    player.repeatMode
+                    player.playWhenReady = false
+                    player.repeatMode = Player.REPEAT_MODE_ONE
                     playerView.player = player
+                    playerView.controllerAutoShow = false
                     val mediaItem = MediaItem.fromUri(videoUri)
                     player.setMediaItem(mediaItem)
                     player.prepare()
