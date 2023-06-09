@@ -27,9 +27,6 @@ class PostsAdapter(
     private val onOpenCommentsClick: (Children) -> Unit
 ) : PagingDataAdapter<Children, PostViewHolder>(DiffUtilCallbackChildren()) {
 
-    //    companion object {
-//        internal var player: ExoPlayer? = null
-//    }
     private var player: ExoPlayer? = null
 
     fun updatePostScore(data: ApiResult<Int>, voteDirection: Int) {
@@ -39,6 +36,12 @@ class PostsAdapter(
                 notifyItemChanged(position)
             }
         }
+    }
+
+    private fun playerStop() {
+        player?.stop()
+        player?.release()
+        player = null
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -89,10 +92,7 @@ class PostsAdapter(
                 }
 
                 imageButtonOpenComments.setOnClickListener {
-//                        player?.stop()
-//                        player?.release()
-//                        player = null
-
+                    playerStop()
                     onOpenCommentsClick.invoke(item)
                 }
             }
@@ -113,9 +113,7 @@ class PostsAdapter(
     override fun onViewDetachedFromWindow(holder: PostViewHolder) {
         super.onViewDetachedFromWindow(holder)
         if (player?.isPlaying == true) {
-            player?.stop()
-            player?.release()
-            player = null
+            playerStop()
         }
     }
 
@@ -130,18 +128,14 @@ class PostsAdapter(
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         if (player?.isPlaying == true) {
-            player?.stop()
-            player?.release()
-            player = null
+            playerStop()
         }
     }
 
     override fun onViewRecycled(holder: PostViewHolder) {
         super.onViewRecycled(holder)
         if (player?.isPlaying == true) {
-            player?.stop()
-            player?.release()
-            player = null
+            playerStop()
         }
     }
 }
@@ -149,8 +143,8 @@ class PostsAdapter(
 @UnstableApi
 class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
     fun startPlayer(videoUri: Uri, player: ExoPlayer) {
-        player?.playWhenReady = false
-        player?.repeatMode = Player.REPEAT_MODE_OFF
+        player.playWhenReady = false
+        player.repeatMode = Player.REPEAT_MODE_OFF
         binding.playerView.player = player
         binding.playerView.controllerAutoShow = false
 //        val mediaItem = MediaItem.fromUri(videoUri)
@@ -164,13 +158,8 @@ class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(bin
                         .build()
                 )
                 .build()
-        player?.setMediaItem(mediaItem)
-        player?.prepare()
+        player.setMediaItem(mediaItem)
+        player.prepare()
 //        player?.play()
-    }
-
-    fun stopPlayer(player: ExoPlayer) {
-        player?.stop()
-        player?.release()
     }
 }
