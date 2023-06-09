@@ -9,5 +9,7 @@ data class RedditVideo(
     val dashUrl : String,
     @SerializedName("hls_url")
     val hlsUrl : String,
+    @SerializedName("scrubber_media_url")
+    val scrubberMediaUrl : String,
 
 )

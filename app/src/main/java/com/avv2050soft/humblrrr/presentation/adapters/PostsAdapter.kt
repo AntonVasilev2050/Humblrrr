@@ -11,8 +11,10 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.avv2050soft.humblrrr.databinding.ItemPostBinding
+import com.avv2050soft.humblrrr.domain.ExoPlayerInstance
 import com.avv2050soft.humblrrr.domain.models.ApiResult
 import com.avv2050soft.humblrrr.domain.models.response.Children
+import com.avv2050soft.humblrrr.presentation.PostsFragment
 import com.avv2050soft.humblrrr.presentation.utils.toStringWithKNotation
 import com.bumptech.glide.Glide
 
@@ -24,11 +26,11 @@ class PostsAdapter(
     private val onVoteClick: (Int, String, Int) -> Unit,
     private val onOpenCommentsClick: (Children) -> Unit
 ) : PagingDataAdapter<Children, PostViewHolder>(DiffUtilCallbackChildren()) {
-    private var activeVideoPosition: Int = RecyclerView.NO_POSITION
 
-    companion object {
-        internal var player: ExoPlayer? = null
-    }
+    //    companion object {
+//        internal var player: ExoPlayer? = null
+//    }
+    private var player: ExoPlayer? = null
 
     fun updatePostScore(data: ApiResult<Int>, voteDirection: Int) {
         data.data?.let { position ->
@@ -51,29 +53,29 @@ class PostsAdapter(
                     .load(children.data.url)
                     .into(imageViewContent)
                 if (children.data.isVideo) {
+                    playerView.visibility = View.VISIBLE
+                    imageViewContent.visibility = View.GONE
                     val videoUri = Uri.parse(children.data.media.redditVideo.dashUrl)
-                    if (position == activeVideoPosition) {
-                        holder.startPlayer(videoUri)
-                    } else {
-                        holder.stopPlayer()
-                    }
-                    holder.startPlayer(videoUri)
+                    player = ExoPlayerInstance.get(root.context)
+                    holder.startPlayer(videoUri, player!!)
                 } else {
                     playerView.visibility = View.GONE
+                    imageViewContent.visibility = View.VISIBLE
                 }
 
                 textViewPostScore.text = children.data.ups.toStringWithKNotation()
                 textViewCommentsCount.text = children.data.numComments?.toStringWithKNotation()
+
                 root.setOnClickListener {
-                    if (position != RecyclerView.NO_POSITION) {
-                        onClick.invoke(item)
-                    }
+                    onClick.invoke(item)
                 }
+
                 imageButtonShare.setOnClickListener {
                     if (position != RecyclerView.NO_POSITION) {
                         onClickShare.invoke(item.data.url)
                     }
                 }
+
                 textViewAuthor.setOnClickListener {
                     onAuthorClick.invoke(item.data.author.toString())
                 }
@@ -87,6 +89,10 @@ class PostsAdapter(
                 }
 
                 imageButtonOpenComments.setOnClickListener {
+//                        player?.stop()
+//                        player?.release()
+//                        player = null
+
                     onOpenCommentsClick.invoke(item)
                 }
             }
@@ -106,41 +112,65 @@ class PostsAdapter(
 
     override fun onViewDetachedFromWindow(holder: PostViewHolder) {
         super.onViewDetachedFromWindow(holder)
-        holder.stopPlayer()
+        if (player?.isPlaying == true) {
+            player?.stop()
+            player?.release()
+            player = null
+        }
     }
+
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        player?.play()
+        if (player?.isPlaying == false) {
+            player?.play()
+        }
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
-        player?.stop()
+        if (player?.isPlaying == true) {
+            player?.stop()
+            player?.release()
+            player = null
+        }
     }
 
     override fun onViewRecycled(holder: PostViewHolder) {
         super.onViewRecycled(holder)
-        holder.stopPlayer()
+        if (player?.isPlaying == true) {
+            player?.stop()
+            player?.release()
+            player = null
+        }
     }
 }
 
 @UnstableApi
 class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun startPlayer(videoUri: Uri) {
-        PostsAdapter.player = ExoPlayer.Builder(binding.root.context).build()
-        PostsAdapter.player?.playWhenReady = false
-        PostsAdapter.player?.repeatMode = Player.REPEAT_MODE_OFF
-        binding.playerView.player = PostsAdapter.player
-        binding.playerView.controllerAutoShow = true
-        val mediaItem = MediaItem.fromUri(videoUri)
-        PostsAdapter.player?.setMediaItem(mediaItem)
-        PostsAdapter.player?.prepare()
-//                    player?.play()
+    fun startPlayer(videoUri: Uri, player: ExoPlayer) {
+        player?.playWhenReady = false
+        player?.repeatMode = Player.REPEAT_MODE_OFF
+        binding.playerView.player = player
+        binding.playerView.controllerAutoShow = false
+//        val mediaItem = MediaItem.fromUri(videoUri)
+        val mediaItem =
+            MediaItem.Builder()
+                .setUri(videoUri)
+                .setClippingConfiguration(
+                    MediaItem.ClippingConfiguration.Builder()
+                        .setStartPositionMs(0)
+                        .setEndPositionMs(3000)
+                        .build()
+                )
+                .build()
+        player?.setMediaItem(mediaItem)
+        player?.prepare()
+//        player?.play()
     }
 
-    fun stopPlayer(){
-        PostsAdapter.player?.stop()
-//        PostsAdapter.player?.release()
+    fun stopPlayer(player: ExoPlayer) {
+        player?.stop()
+        player?.release()
     }
 }

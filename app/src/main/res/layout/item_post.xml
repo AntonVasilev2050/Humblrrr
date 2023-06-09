@@ -9,7 +9,7 @@
     app:cardElevation="2dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutItemPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         <ImageView
             android:id="@+id/imageViewContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/reddit_s_image" />
 
@@ -128,5 +128,5 @@
                 android:src="@drawable/baseline_share_24_black" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>

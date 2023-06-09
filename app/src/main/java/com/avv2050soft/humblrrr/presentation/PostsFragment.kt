@@ -1,6 +1,7 @@
 package com.avv2050soft.humblrrr.presentation
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -39,6 +41,20 @@ const val VIDEO_URL = "fallback_url"
 @AndroidEntryPoint
 class PostsFragment : Fragment(R.layout.fragment_posts) {
 
+//    companion object {
+//        @Volatile
+//        private var INSTANCE: ExoPlayer? = null
+//        fun getPlayerInstance(context: Context): ExoPlayer {
+//            return INSTANCE ?: synchronized(this){
+//                val instance = ExoPlayer.Builder(context).build()
+//                INSTANCE = instance
+//                instance
+//            }
+//        }
+//
+////        internal var player: ExoPlayer? = null
+//    }
+
     var voteDirection = 0
     private var userIsSubscriber: Boolean? = null
     private var icon: String? = null
@@ -64,6 +80,11 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
         if (children.data.isVideo){
             bundle.putString(VIDEO_URL, children.data.media.redditVideo.dashUrl)
         }
+//        if (player?.isPlaying == true){
+//            player!!.stop()
+//            player!!.release()
+//            player = null
+//        }
         findNavController().navigate(R.id.action_postsFragment_to_commentsFragment, bundle)
     }
 
@@ -92,9 +113,7 @@ class PostsFragment : Fragment(R.layout.fragment_posts) {
     }
 
     private fun onItemClick(children: Children) {
-        if (!children.data.isVideo) {
-            onClickOpenComments(children)
-        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

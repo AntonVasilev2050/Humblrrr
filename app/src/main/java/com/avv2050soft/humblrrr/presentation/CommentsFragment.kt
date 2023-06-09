@@ -15,6 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.avv2050soft.humblrrr.R
 import com.avv2050soft.humblrrr.data.CommentsPagingSource
 import com.avv2050soft.humblrrr.databinding.FragmentCommentsBinding
+import com.avv2050soft.humblrrr.domain.ExoPlayerInstance
 import com.avv2050soft.humblrrr.presentation.adapters.CommentsAdapter
 import com.avv2050soft.humblrrr.presentation.adapters.CommonLoadStateAdapter
 import com.avv2050soft.humblrrr.presentation.utils.hideAppbarAndBottomView
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class CommentsFragment : Fragment(R.layout.fragment_comments) {
 
-    private var player:ExoPlayer? = null
+    var player: ExoPlayer? = null
 
     private val binding by viewBinding(FragmentCommentsBinding::bind)
     private val viewModel: CommentsViewModel by viewModels()
@@ -63,10 +64,17 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         val isVideo = arguments?.getBoolean(IS_VIDEO)
         val videoUrl = arguments?.getString(VIDEO_URL)
 
+        player = ExoPlayerInstance.get(requireContext())
+        player?.release()
+
         CommentsPagingSource.postId = postId.toString()
         binding.textViewPostTitle.text = postTitle
-        loadPicture(postContentPictureUrl)
-        loadVideo(isVideo, videoUrl)
+        if (isVideo == true) {
+            player = ExoPlayerInstance.get(requireContext())
+            loadVideo(isVideo, videoUrl)
+        } else {
+            loadPicture(postContentPictureUrl)
+        }
 
         setupCommentsAdapter()
         hideAppbarAndBottomView(requireActivity())
@@ -74,6 +82,14 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
 
     override fun onDestroy() {
         super.onDestroy()
+        player?.stop()
+        player?.release()
+        player = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        player?.stop()
         player?.release()
         player = null
     }
@@ -104,7 +120,6 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
                 playerView.visibility = View.VISIBLE
                 imageViewPostContent.visibility = View.GONE
                 val videoUri = Uri.parse(videoUrl)
-                player = ExoPlayer.Builder(playerView.context).build()
                 player?.playWhenReady = true
                 player?.repeatMode = Player.REPEAT_MODE_ONE
                 playerView.player = player
