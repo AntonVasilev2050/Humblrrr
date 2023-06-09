@@ -30,6 +30,8 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class CommentsFragment : Fragment(R.layout.fragment_comments) {
 
+    private var player:ExoPlayer? = null
+
     private val binding by viewBinding(FragmentCommentsBinding::bind)
     private val viewModel: CommentsViewModel by viewModels()
     private val commentsAdapter = CommentsAdapter(
@@ -59,15 +61,21 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         val postTitle = arguments?.getString(POST_TITLE)
         val postContentPictureUrl = arguments?.getString(POST_CONTENT_PICTURE)
         val isVideo = arguments?.getBoolean(IS_VIDEO)
-        val fallbackUrl = arguments?.getString(FALLBACK_URL)
+        val videoUrl = arguments?.getString(VIDEO_URL)
 
         CommentsPagingSource.postId = postId.toString()
         binding.textViewPostTitle.text = postTitle
         loadPicture(postContentPictureUrl)
-        loadVideo(isVideo, fallbackUrl)
+        loadVideo(isVideo, videoUrl)
 
-        hideAppbarAndBottomView(requireActivity())
         setupCommentsAdapter()
+        hideAppbarAndBottomView(requireActivity())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        player?.release()
+        player = null
     }
 
     private fun loadPicture(postContentPictureUrl: String?) {
@@ -90,23 +98,21 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
     }
 
     @UnstableApi
-    private fun loadVideo(isVideo: Boolean?, fallbackUrl: String?) {
+    private fun loadVideo(isVideo: Boolean?, videoUrl: String?) {
         with(binding) {
             if (isVideo == true) {
                 playerView.visibility = View.VISIBLE
                 imageViewPostContent.visibility = View.GONE
-                val videoUri = Uri.parse(
-                    fallbackUrl?.substringBefore("?") ?: "?"
-                )
-                val player = ExoPlayer.Builder(playerView.context).build()
-                player.playWhenReady = true
-                player.repeatMode = Player.REPEAT_MODE_ONE
+                val videoUri = Uri.parse(videoUrl)
+                player = ExoPlayer.Builder(playerView.context).build()
+                player?.playWhenReady = true
+                player?.repeatMode = Player.REPEAT_MODE_ONE
                 playerView.player = player
                 playerView.controllerAutoShow = false
                 val mediaItem = MediaItem.fromUri(videoUri)
-                player.setMediaItem(mediaItem)
-                player.prepare()
-                player.play()
+                player?.setMediaItem(mediaItem)
+                player?.prepare()
+                player?.play()
             } else {
                 playerView.visibility = View.GONE
             }

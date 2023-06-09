@@ -4,7 +4,6 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.MediaController
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -25,6 +24,11 @@ class PostsAdapter(
     private val onVoteClick: (Int, String, Int) -> Unit,
     private val onOpenCommentsClick: (Children) -> Unit
 ) : PagingDataAdapter<Children, PostViewHolder>(DiffUtilCallbackChildren()) {
+    private var activeVideoPosition: Int = RecyclerView.NO_POSITION
+
+    companion object {
+        internal var player: ExoPlayer? = null
+    }
 
     fun updatePostScore(data: ApiResult<Int>, voteDirection: Int) {
         data.data?.let { position ->
@@ -47,18 +51,13 @@ class PostsAdapter(
                     .load(children.data.url)
                     .into(imageViewContent)
                 if (children.data.isVideo) {
-                    val videoUri = Uri.parse(
-                        children.data.media.redditVideo.fallbackUrl.substringBefore("?", "?")
-                    )
-                    val player = ExoPlayer.Builder(playerView.context).build()
-                    player.playWhenReady = false
-                    player.repeatMode = Player.REPEAT_MODE_ONE
-                    playerView.player = player
-                    playerView.controllerAutoShow = false
-                    val mediaItem = MediaItem.fromUri(videoUri)
-                    player.setMediaItem(mediaItem)
-                    player.prepare()
-                    player.play()
+                    val videoUri = Uri.parse(children.data.media.redditVideo.dashUrl)
+                    if (position == activeVideoPosition) {
+                        holder.startPlayer(videoUri)
+                    } else {
+                        holder.stopPlayer()
+                    }
+                    holder.startPlayer(videoUri)
                 } else {
                     playerView.visibility = View.GONE
                 }
@@ -99,6 +98,49 @@ class PostsAdapter(
             ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
+
+    override fun onViewAttachedToWindow(holder: PostViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        player?.play()
+    }
+
+    override fun onViewDetachedFromWindow(holder: PostViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.stopPlayer()
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        player?.play()
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        player?.stop()
+    }
+
+    override fun onViewRecycled(holder: PostViewHolder) {
+        super.onViewRecycled(holder)
+        holder.stopPlayer()
+    }
 }
 
-class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
+@UnstableApi
+class PostViewHolder(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun startPlayer(videoUri: Uri) {
+        PostsAdapter.player = ExoPlayer.Builder(binding.root.context).build()
+        PostsAdapter.player?.playWhenReady = false
+        PostsAdapter.player?.repeatMode = Player.REPEAT_MODE_OFF
+        binding.playerView.player = PostsAdapter.player
+        binding.playerView.controllerAutoShow = true
+        val mediaItem = MediaItem.fromUri(videoUri)
+        PostsAdapter.player?.setMediaItem(mediaItem)
+        PostsAdapter.player?.prepare()
+//                    player?.play()
+    }
+
+    fun stopPlayer(){
+        PostsAdapter.player?.stop()
+//        PostsAdapter.player?.release()
+    }
+}
