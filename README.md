@@ -1,5 +1,6 @@
 Ссылка на видео демонстрацию:
 
+https://drive.google.com/file/d/17df5C2CWws3H7iFfNTz-lEPPn7BxoaDn/view?usp=sharing
 
 Скриншоты:
 
