@@ -41,20 +41,6 @@ const val VIDEO_URL = "fallback_url"
 @AndroidEntryPoint
 class PostsFragment : Fragment(R.layout.fragment_posts) {
 
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: ExoPlayer? = null
-//        fun getPlayerInstance(context: Context): ExoPlayer {
-//            return INSTANCE ?: synchronized(this){
-//                val instance = ExoPlayer.Builder(context).build()
-//                INSTANCE = instance
-//                instance
-//            }
-//        }
-//
-////        internal var player: ExoPlayer? = null
-//    }
-
     var voteDirection = 0
     private var userIsSubscriber: Boolean? = null
     private var icon: String? = null

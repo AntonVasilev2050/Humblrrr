@@ -104,9 +104,6 @@
             app:layout_constraintTop_toTopOf="@+id/textViewSubscribersLabel"
             tools:text="21" />
 
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
